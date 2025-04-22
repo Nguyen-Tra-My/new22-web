@@ -1,0 +1,161 @@
+/* Reset và cấu hình chung */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+header h1 {
+    font-size: 2.5rem;
+}
+/* Container chính */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 30px auto;
+    justify-content: space-between;
+}
+
+/* Nội dung chính */
+.main-content {
+    width: 70%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 28%;
+    background-color: #f9f9f9;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.sidebar h3 {
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+/* Bài viết */
+.news-item {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.news-item h3 {
+    font-size: 1.6rem;
+    color: #007BFF;
+}
+.news-item p {
+    font-size: 1rem;
+    color: #555;
+}
+.news-item img {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+/* Phân trang */
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+.pagination a {
+    margin: 0 5px;
+    padding: 8px 14px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+/* Chức năng admin */
+.admin-functions {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+}
+.admin-functions a {
+    margin: 0 10px;
+    color: #007BFF;
+    text-decoration: none;
+}
+.admin-functions a:hover {
+    color: #ff9900;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .main-content, .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    nav.main-nav ul, nav.category-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Menu chính (hiển thị trên 2 dòng với Grid) */
+nav.main-nav ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Tạo grid với tối thiểu 120px mỗi mục */
+    gap: 10px; /* Khoảng cách giữa các mục */
+    padding: 0;
+    list-style: none;
+    justify-items: center; /* Căn giữa các mục trong grid */
+}
+
+/* Các liên kết trong menu */
+nav.main-nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    border-radius: 5px;
+    display: block; /* Đảm bảo link chiếm toàn bộ không gian của li */
+}
+
+nav.main-nav ul li a:hover {
+    background-color: #0056b3;
+}
+
+/* CSS cho tên tác giả */
+.author p{
+    text-align: right;
+    font-style: italic;
+    margin-top: 20px;
+}
