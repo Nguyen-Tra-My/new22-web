@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 22, 2025 lúc 10:45 AM
+-- Thời gian đã tạo: Th4 26, 2025 lúc 05:12 PM
 -- Phiên bản máy phục vụ: 10.4.20-MariaDB
 -- Phiên bản PHP: 8.0.9
 
@@ -20,60 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `new22`
 --
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `chuyenmuc`
---
-
-CREATE TABLE `chuyenmuc` (
-  `id` int(11) NOT NULL,
-  `ten` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `mota` text COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `chuyenmuc`
---
-
-INSERT INTO `chuyenmuc` (`id`, `ten`, `mota`, `created_at`) VALUES
-(1, 'Thời sự', NULL, '2025-04-21 20:03:56'),
-(2, 'Chính trị', NULL, '2025-04-21 20:03:56'),
-(3, 'Y tế', NULL, '2025-04-21 20:03:56'),
-(4, 'Giáo dục', NULL, '2025-04-21 20:03:56'),
-(5, 'Khoa học', NULL, '2025-04-21 20:03:56'),
-(6, 'Giải trí', NULL, '2025-04-21 20:03:56'),
-(7, 'Xe', NULL, '2025-04-21 20:03:56'),
-(8, 'Thể thao', NULL, '2025-04-21 20:03:56');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `comments`
---
-
-CREATE TABLE `comments` (
-  `id` int(11) NOT NULL,
-  `news_id` int(11) DEFAULT NULL,
-  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `content` text COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `comments`
---
-
-INSERT INTO `comments` (`id`, `news_id`, `username`, `content`, `created_at`) VALUES
-(1, 7, 'admin', 'yeahhhhhh', '2025-04-21 20:37:31'),
-(2, 5, 'admin', 'nhanh quáaaaaaaaaaaaaaaaaaaaaaaa', '2025-04-21 20:37:50'),
-(3, 6, 'admin', 'amazinggggggggggggggggggggggggg', '2025-04-21 20:38:12'),
-(4, 4, 'admin', 'hông biết............', '2025-04-21 20:38:33'),
-(5, 3, 'admin', 'giỏi quáaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2025-04-21 20:38:52'),
-(6, 2, 'admin', 'thật bất ngờ!!!!!!!!!!!!!!!!!!!!!!!!!!!!', '2025-04-21 20:39:33'),
-(7, 17, 'abc', 'hay quá.........', '2025-04-22 08:03:12');
 
 -- --------------------------------------------------------
 
@@ -112,54 +58,11 @@ INSERT INTO `news` (`id`, `tieude`, `noidung`, `created_at`, `image`, `views`, `
 (14, 'Rolls-Royce Ghost Series II ra mắt khách Việt, giá từ 34,9 tỷ đồng', 'Rolls-Royce Ghost Series II thay đổi một số chi tiết về ngoại thất, nội thất, động cơ V12 giữ nguyên.\r\n\r\nMẫu sedan siêu sang cỡ lớn Rolls-Royce Ghost Series II ra mắt đến khách Việt ngày 17/4. Đây là phiên bản nâng cấp giữa vòng đời, có thiết kế đầu xe tương đồng với các đàn anh Phantom và Cullinan. Xe thay đổi ngoại thất và công nghệ, các chi tiết nội thất tinh chỉnh nhẹ so với thế hệ trước, và khối động cơ vẫn giữ nguyên.\r\nThay đổi ở ngoại thất là phần đèn LED ban ngày vuốt nhọn tạo ra tổng thể hiện đại, sắc sảo. Phần lưới tản nhiệt Pantheon bổ sung thêm tính năng phát sáng. Hốc hút gió mở rộng và trang trí bằng viền crôm. Đèn hậu lấy cảm hứng thiết kế của mẫu xe điện Spectre.\r\n\r\nThay đổi lớn ở nội thất của Ghost Series II là màn hình lái kỹ thuật số, liền mạch với phần màn hình thông tin giải trí cỡ lớn đặt giữa, kế bên là hộp đồng hồ chứa biểu tượng Spirit of Ecstasy thu nhỏ. Xe trang bị 18 loa công suất 1.400 W. Ngoài ra, hàng ghế sau trang bị hai màn hình hoạt động riêng biệt, gắn ở lưng hàng ghế trước.\r\n\r\nĐiểm nhấn khác của nội thất là kỹ thuật chế tác các vật liệu. Đầu tiên là sợi vải bọc ghế làm từ cây tre, với các sợi được dệt chéo, mà Rolls-Royce cho rằng một chiếc xe có thể tiêu tốn 2,2 triệu mũi khâu, gần 18 km chỉ và hơn 20 giờ để thực hiện. Tiếp theo là các thớ gỗ ốp là loại có các lỗ nhỏ li ti, sau đó các nghệ nhân trám vào những lỗ này các hạt kim loại siêu nhỏ để tạo hiệu ứng lấp lánh.\r\n\r\nVề vận hành, Ghost Series II vẫn sử dụng khối động cơ 6,75 lít V12 tăng áp kép, công suất 563 mã lực và mô-men xoắn 850 Nm, đạt được khi vòng tua chạm mức 1.600 vòng/phút. Tăng tốc 0-100 km/h trong 4,8 giây và tốc độ tối đa 250 km/h.\r\n\r\nThế hệ này còn sử dụng camera và cảm biến để phân tích điều kiện mặt đường, nhằm tinh chỉnh hệ thống treo cho phù hợp nhất. Bên cạnh đó, hệ thống truyền động có khả năng sử dụng GPS để phân tính đường đi phía trước nhằm chọn ra cấp số phù hợp, ví dụ như khi xe sắp vào đoạn cua lớn.\r\n\r\nPhiên bản Ghost Series II tiêu chuẩn có giá từ 34,9 tỷ đồng. Ngoài ra còn có phiên bản trục cơ sở dài Ghost Extended Series II giá từ 38,9 tỷ đồng, và Black Badge Ghost Series II nâng cấp sức mạnh động cơ giá từ 40,59 tỷ đồng.', '2025-04-21 20:50:59', 'Screenshot 2025-04-22 035040.png', 1, 7, 'Nguyễn Trà My'),
 (15, 'Djokovic chung nhánh Alcaraz, dự báo gặp khó ở Madrid Open 2025', 'Khó khăn thực sự sẽ đến với Djokovic tại tứ kết với những đối thủ rất khó chịu như Matteo Berrettini, Tommy Paul, Karen Khachanov, Tallon Griekspoor, tay vợt gốc Việt Learner Tien hay sao trẻ Joao Fonseca. Đối thủ lớn nhất của tay vợt 37 tuổi ở bán kết Madrid Open năm nay sẽ là Carlos Alcaraz. Ở các giải đấu trong năm nay, Nole rất có duyên chung nhánh đấu với Carlitos, nhưng mới chỉ gặp người đàn em tại tứ kết Australian Open đầu năm nay.\r\nLần tham dự Mutua Madrid Open 2025 đánh dấu màn trở lại của Novak Djokovic tại Caja Magica sau 3 năm. Trong quá khứ, Nole từng 3 lần lên ngôi tại đây - thành tích chỉ kém Rafael Nadal (5 lần) và ngang bằng Roger Federer.\r\n\r\nCác trận đấu thuộc nhánh đấu chính thức nội dung đơn nam Madrid Open năm nay sẽ diễn ra từ ngày mai (23/4) theo giờ Việt Nam.\r\n', '2025-04-22 07:24:55', 'Picture2.png', 2, 8, 'He A'),
 (16, 'HLV Chu Đình Nghiêm hé lộ lý do rất muốn thắng CAHN', 'HLV Chu Đình Nghiêm cho biết CLB Hải Phòng quyết thắng CLB CAHN ở trận Tứ kết Cúp Quốc gia 2024/25.\r\nTheo kế hoạch, trận đấu muộn nhất vòng Tứ kết Cúp Quốc gia 2024/25 giữa CLB Hải Phòng vs CLB Công an Hà Nội (CAHN) sẽ diễn ra vào lúc 19h15 hôm nay (22/4) trên sân Lạch Tray.\r\nTrước đó, Ban tổ chức cũng đã xác định được 3 đội xuất sắc nhất giành vé đi tiếp vào bán kết là: CLB Bình Dương, CLB Sông Lam Nghệ An và CLB Thể Công Viettel.\r\nTrở lại với trận tứ kết muộn giữa CLB Hải Phòng vs CLB CAHN, HLV trưởng CLB Hải Phòng, ông Chu Đình Nghiêm chia sẻ: \"Ngay sau trận đấu với TP.HCM ở vòng 19 V-League vừa qua, chúng tôi đã bước ngay vào chuẩn bị cho trận đấu bù vòng Tứ kết Cúp Quốc gia.\r\nThực tế, trước trận đấu rất khó nói trước điều gì, vì cả hai đội đều rất muốn thắng để tìm cơ hội cho chính mình.\r\nTuy nhiên, chúng tôi càng rất muốn thắng ở trận đấu này, bởi nếu vào bán kết, chúng tôi sẽ tiếp tục được thi đấu trên sân nhà Lạch Tray. Đấy là một lợi thế mà chúng tôi không muốn bỏ lỡ”.\r\nNhận định về đối thủ CAHN, thuyền trưởng CLB Hải Phòng cho biết: \"CAHN là một đội bóng mạnh, lực lượng của họ có nhiều ngôi sao có thể tạo đột biến, nên cuộc đối đầu này chẳng dễ cho CLB Hải Phòng.\r\nTuy nhiên, chúng tôi có lợi thế khi được chơi trên sân nhà, nên sẽ nỗ lực hết mình cho mục tiêu có mặt ở bán kết Cúp Quốc gia. \r\nThực tế, trước trận đấu rất khó nói trước điều gì, vì cả hai đội đều rất muốn thắng để tìm cơ hội cho chính mình.\r\nTuy nhiên, chúng tôi càng rất muốn thắng ở trận đấu này, bởi nếu vào bán kết, chúng tôi sẽ tiếp tục được thi đấu trên sân nhà Lạch Tray. Đấy là một lợi thế mà chúng tôi không muốn bỏ lỡ”.\r\nNhận định về đối thủ CAHN, thuyền trưởng CLB Hải Phòng cho biết: \"CAHN là một đội bóng mạnh, lực lượng của họ có nhiều ngôi sao có thể tạo đột biến, nên cuộc đối đầu này chẳng dễ cho CLB Hải Phòng.\r\nTuy nhiên, chúng tôi có lợi thế khi được chơi trên sân nhà, nên sẽ nỗ lực hết mình cho mục tiêu có mặt ở bán kết Cúp Quốc gia. \r\n', '2025-04-22 07:31:01', 'Screenshot 2025-04-22 121108.png', 0, 8, 'He A'),
-(17, 'Fan MU thốt lên 1 điều khi Antony lập siêu phẩm vô lê', 'Antony của Manchester United tiếp tục ghi dấu ấn trong thời gian thi đấu dưới dạng cho mượn tại Real Betis.\r\nCầu thủ chạy cánh Antony đang cho thấy phong độ ấn tượng trong quãng thời gian được cho mượn tại Real Betis.\r\nGia nhập Manchester United vào năm 2022 với mức phí chuyển nhượng lên tới 86 triệu Bảng từ Ajax, Antony từng được kỳ vọng sẽ trở thành ngôi sao sáng tại Old Trafford. Tuy nhiên, tuyển thủ Brazil đã không đáp ứng được kỳ vọng khi chỉ ghi được 12 bàn thắng và có 5 pha kiến tạo sau 96 lần ra sân.\r\nCầu thủ 25 tuổi dần mất vị trí kể từ khi HLV Ruben Amorim tiếp quản băng ghế chỉ đạo và đã được đem cho Betis mượn trong kỳ chuyển nhượng tháng 1.\r\nThế nhưng, tại Tây Ban Nha, Antony như lột xác. Anh đã có 6 bàn thắng và 4 kiến tạo sau 17 lần ra sân trên mọi đấu trường – một phong độ ấn tượng vượt xa những gì từng thể hiện tại Man Utd.\r\nTrong trận đấu mới nhất gặp Girona tại vòng 32 La Liga, Antony tiếp tục toả sáng khi đóng góp một bàn thắng giúp Real Betis giành chiến thắng 3-1 ngay trên sân khách. Đáng chú ý, pha lập công của anh đến từ một cú vô-lê chân phải (chân không thuận) sau đường tạt bóng tuyệt đẹp của Romain Perraud ở phút 39.\r\nBàn thắng này khiến người hâm mộ Quỷ đỏ không khỏi bất ngờ, nhiều người thậm chí đã kêu gọi đội bóng trao cho Antony thêm một cơ hội ở mùa giải tới.\r\nMột cổ động viên viết trên mạng xã hội: \"Đã đến lúc phải nhìn lại Manchester United và tự hỏi: tại sao chúng ta lại lãng phí quá nhiều tài năng đến vậy?\"\r\n', '2025-04-22 07:31:43', 'Screenshot 2025-04-22 121133.png', 3, 8, 'He A'),
-(18, 'VTV Bình Điền Long An giành quyền vào tứ kết giải châu Á 2025', 'Bóng chuyền VTV Bình Điền Long An vs Saipa Tehran diễn ra lúc mấy giờ?\r\nThời gian: 9h00, hôm nay 22/4\r\nGiải đấu: bảng C giải bóng chuyền vô địch các CLB nữ châu Á 2025\r\nVTV Bình Điền Long An và Saipa Tehran (Iran) đều đã phải nhận thất bại ở trận ra quân giải bóng chuyền vô địch các CLB nữ châu Á (AVC Women\'s Champions League) 2025 trước đại diện Trung Quốc - Bắc Kinh (Beijing BAIC Motor). Chiến thắng là điều bắt buộc với cả hai nếu muốn giành quyền vào tứ kết giải đấu.\r\n\r\nNhìn vào màn thể hiện của hai đội ở trận ra quân, VTV Bình Điền Long An vẫn là đội đánh giá cao hơn. Trần Thị Thanh Thúy và các đồng đội đã chơi xuất sắc và dẫn trước Bắc Kinh 2-0 trước khi thua ngược đáng tiếc 2-3, trong khi Saipa Tehran hoàn toàn bất lực trước sức mạnh của Jin Ye và các đồng đội và chấp nhận thất bại 0-3. \r\n\r\nDanh sách cầu thủ VTV Bình Điền Long An AVC Women\'s Champions League 2025\r\n', '2025-04-22 07:31:43', '491684159_1135356218606931_8987587461539943544_n-6806e04343fab.jpg', 1, 8, 'He A'),
-(19, 'Nadal: \'Tôi không nhớ tennis chút nào\'', 'Rafael Nadal mới đây đã có những chia sẻ ở lễ trao giải Laureus World Sports Awards 2025 diễn ra tại Madrid, Tây Ban Nha ngày hôm qua 21/4.\r\n\"Ông vua sân đất nện\" Rafael Nadal đã chính thức khép lại sự nghiệp thi đấu đỉnh cao sau trận đấu cuối cùng của anh tại Davis Cup Finals ở Malaga vào tháng 11 năm ngoái. Ở tuổi 38, Nadal rời sân đấu với bảng thành tích đồ sộ gồm 22 danh hiệu Grand Slam, trong đó có 14 lần đăng quang tại giải Grand Slam thứ 2 trong năm - Roland Garros.\r\nSau khi giải nghệ, Nadal gần như không tham dự nhiều hoạt động quần vợt, tập trung vào các sở thích khác của bản thân như bóng đá, golf hay chơi padel - môn thể thao kết hợp giữa tennis và squash.\r\nPhát biểu trước báo giới vào ngày hôm qua 21/4, Rafa chia sẻ một cách thẳng thắn về lí do anh đang tỏ ra xa cách bộ môn làm nên tên tuổi của mình.\r\n\"Sự thật là tôi không nhớ quần vợt. Không. Tôi không nhớ chút nào.\", Nadal bộc bạch ở lễ trao giải Laureus World Sport Awards tại Madrid. \"Không phải vì tôi chán quần vợt. Tôi đã kết thúc sự nghiệp của mình một cách vui vẻ. Nếu có thể, tôi vẫn muốn tiếp tục, vì tôi yêu những gì mình đang làm. Đó là đam mê của tôi, và đó cũng là điều đã diễn ra suốt cuộc đời tôi. Nhưng khi bạn nhận ra rằng, về mặt thể chất, bạn không thể tiếp tục... bạn phải học cách khép lại chương đó. Và tôi đã khép lại nó\".\r\n\r\nTrong suốt sự nghiệp kéo dài hơn hai thập kỉ, Nadal đã không ít lần đối mặt với những chấn thương nghiêm trọng. Tuy vậy, anh vẫn kiên định không tuyên bố giải nghệ cho đến khi thật sự chắc chắn về quyết định của mình.\r\n\"Tôi đã trì hoãn việc đưa ra quyết định cuối cùng vì tôi cần thời gian để chắc chắn rằng đó là quyết định đúng đắn. Điều khó khăn nhất là ngồi trên ghế sofa và tự hỏi liệu mình có nên tiếp tục cố gắng hay không. Khi tôi thấy cơ thể mình không thể phục hồi tốt để tiếp tục tận hưởng trên sân đấu, tôi đã quyết định dừng lại\".\r\nTại Roland Garros sắp tới, Rafael Nadal sẽ có mặt tại sân chính Philippe Chatrier để tham dự buổi lễ tri ân long trọng do Ban tổ chức giải Grand Slam này tổ chức. Cùng dự lễ tri ân với Rafa còn có Richard Gasquet - tay vợt có cú trái một tay lịch lãm bậc nhất sẽ giải nghệ sau khi Roland Garros năm nay khép lại.\r\n', '2025-04-22 07:31:43', 'Picture3.png', 1, 8, 'He A'),
-(22, '\'Địa đạo\' vượt 150 tỷ đồng', 'Sự xuất hiện của \"Tìm xác: Ma không đầu\" thay đổi cục diện phòng vé tuần qua, khiến \"Địa đạo: Mặt trời trong bóng tối\" bị mất ngôi đầu bảng. Song, phim có Tiến Luật và Ngô Kiến Huy chưa tạo được hiệu ứng truyền thông nổi bật.\r\nSau hai tuần liên tiếp giữ vững ngôi vương phòng vé, Địa đạo: Mặt trời trong bóng tối chính thức bị phim Việt Tìm xác: Ma không đầu hạ gục.\r\n\r\nPhim hài – kinh dị có Ngô Kiến Huy và Tiến Luật vươn lên dẫn đầu bảng xếp hạng của Box Office Vietnam (đơn vị quan sát phòng vé độc lập). Song, phim chưa tạo hiệu ứng truyền thông quá ấn tượng.\r\nĐịa đạo bị lật đổ\r\nTrong ba ngày cuối tuần, Tìm xác: Ma không đầu thu hơn 21 tỷ đồng với khoảng trên 251.958 vé bán ra trong hơn 7.777 suất chiếu. Con số này tụt 24% so với Địa đạo tuần trước (27,5 tỷ đồng), cũng không phải là thành tích mở màn quá ấn tượng của phim Việt.\r\n\r\nDự án thuộc thể loại hài - kinh dị, Bùi Văn Hải đạo diễn, quy tụ dàn diễn viên nổi tiếng gồm Tiến Luật, Ngô Kiến Huy, NSND Hồng Vân… Kịch bản tiếp tục khai thác nghề hốt xác và lái xe cứu thương nhưng với góc nhìn hài hước, mang đến những tràng cười sảng khoái cho người xem sau loạt phim kinh dị rùng rợn, nặng đô trước đó.\r\n\r\nĐáng tiếc, phim của Ngô Kiến Huy và Tiến Luật chưa tạo được hiệu ứng quá tốt. Phim cũng không được đánh giá quá cao về nội dung, cách dẫn dắt câu chuyện. Sự góp mặt của dàn diễn viên tên tuổi là yếu tố hút khách duy nhất, nhưng không đủ để cứu vớt chất lượng.\r\n\r\nĐứng ở vị trí thứ hai, Địa đạo: Mặt trời trong bóng tối đạt doanh thu cuối tuần không ấn tượng, chỉ hơn 11,4 tỷ đồng.\r\n\r\nDự án do Bùi Thạc Chuyên đạo diễn, Thái Hòa đóng chính, hướng tới kỷ niệm 50 năm thống nhất đất nước, kể về các du kích tại căn cứ Bình An Đông (Củ Chi).\r\n\r\nHiện phim đã thu về hơn 150 tỷ đồng, lập kỷ lục là phim chiến tranh Việt Nam có doanh thu cao nhất lịch sử điện ảnh nước nhà. Đây cũng là thành tích ấn tượng đối với một bộ phim không sử dụng ngân sách nhà nước, lại chọn đề tài lịch sử khá kén khán giả.\r\n\r\nVới tốc độ hiện tại, nhiều khả năng Địa \r\nđạo sẽ rời rạp với doanh thu khoảng 160-170 tỷ đồng, cơ hội chạm đến con số 200 tỷ đồng là không cao.\r\nĐứng ở vị trí thứ ba là phim hài – kinh dị Thái Lan Cưới ma giải hạn. Đây là bản remake của phim Đài Loan Chuyện tôi và ma quỷ thành người một nhà có Hứa Quang Hán đóng chính, từng gây sốt phòng vé Việt năm 2023.\r\n\r\nCầm trịch dự án là đạo diễn Chayanop Boonprakob – đứng sau nhiều tác phẩm đình đám như SuckSeed hay Friend Zone. Bản Thái giữ nguyên tinh thần nguyên tác nhưng cũng thêm thắt nhiều nét văn hóa bản địa nhằm tạo sức hút riêng.\r\n\r\nRa mắt rạp Việt, dự án nhanh chóng được khán giả đón nhận dù khâu quảng bá không rầm rộ. Phim chưa tạo hiệu ứng quá mạnh nhưng cũng làm giảm tốc độ của các đối thủ khác.\r\n\r\nRạp chiếu ảm đạm\r\nHai vị trí cuối cùng trong top 5 của Box Office Vietnam là A Minecraft Movie (2,1 tỷ) và phim Hàn Đầu xuôi đuôi đút lót (460 triệu đồng).\r\n\r\nBom tấn A Minecraft Movie tiếp tục rớt xuống vị trí thứ tư, nâng tổng doanh thu tại rạp Việt lên mức trên 21 tỷ đồng. Tác phẩm chuyển thể từ tựa game cùng tên, nằm trong top bán chạy nhất mọi thời với hơn 300 triệu bản bán ra.\r\n\r\nDự án được đầu tư kinh phí cao (hơn 300 triệu USD), quy tụ dàn sao gồm Jack Black, Jason Momoa, Emma Myers… hứa hẹn tạo nên một cú nổ lớn tại phòng vé. Song, phản ứng ban đầu từ giới phê bình chưa tốt, khiến kỳ vọng phần nào bị giảm sút.\r\nĐầu xuôi đuôi đút lót thuộc thể loại hài hước, có tài tử Ha Jung Woo đóng chính. Phim kể về CEO một công ty công nghệ bị bạn cũ phản bội nên tìm mọi chiêu trò để cứu công ty. Song, dự án chưa được chú ý vì đụng độ nhiều phim Việt khi ra rạp, nhà phát hành cũng không đẩy mạnh quảng bá.\r\n\r\nCác dự án ngoài top 5 đều có doanh thu thấp, không quá 500 triệu đồng, cho thấy rạp chiếu tiếp tục rơi vào tình trạng ảm đạm. Nhiều phim ngoại mới ra mắt cũng ế ẩm. Các phim hành động Tay nghiệp dư, Mật vụ phụ hồ hay phim kinh dị Mẹ quỷ con ma… đều không được chú ý tại rạp Việt.\r\n\r\nTuần này, hai “ông lớn” khác của điện ảnh Việt là Lý Hải và Victor Vũ sẽ có phim ra rạp, khởi động cuộc chiến gay cấn ngoài rạp dịp lễ 30/4.\r\n\r\nLý Hải nối dài thương hiệu Lật mặt với phần thứ tám mang tên Vòng tay nắng. Phim được kỳ vọng phát huy phong cách gần gũi, dễ xem, đồng thời chạm đến cảm xúc của khán giả đại chúng – đặc trưng làm nên thành công của cả series.\r\n\r\nTrong khi đó, Victor Vũ tiếp tục thử sức với Thám tử Kiên: Kỳ án không đầu - tiền truyện của Người vợ cuối cùng (2023). Nội dung phim tập trung khai thác câu chuyện riêng về nhân vật thám tử Kiên – một người thông minh, quyết đoán với tài phá án xuất sắc.\r\n\r\nCả hai đều áp dụng chiến lược chiếu sớm để thu hút khán giả, hứa hẹn giúp phòng vé sôi động trở lại. Hiện vẫn chưa biết phim nào sẽ chiến thắng. Nhưng nhiều khả năng phim có Tiến Luật – Ngô Kiến Huy sẽ bị lép vế trước hai đối thủ quá mạnh.\r\n', '2025-04-22 07:31:43', 'gt1.png', 1, 6, 'He A');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `users`
---
-
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `role` enum('admin','user') COLLATE utf8_unicode_ci DEFAULT 'user'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `users`
---
-
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`) VALUES
-(1, 'admin', '0192023a7bbd73250516f069df18b500', 'admin@example.com', 'admin'),
-(2, 'hea', 'e10adc3949ba59abbe56e057f20f883e', 'heaksor12003@gmail.com', 'admin'),
-(3, 'abc', 'e10adc3949ba59abbe56e057f20f883e', 'heaksor12003@gmail.com', 'user'),
-(4, 'truc', 'e10adc3949ba59abbe56e057f20f883e', 'trucvu0222@gmail.com', 'admin'),
-(5, 'linh', 'e10adc3949ba59abbe56e057f20f883e', 'trankhanhlinh557@gmail.com', 'admin'),
-(6, 'diep', 'e10adc3949ba59abbe56e057f20f883e', 'ngocdiep24kt@gmail.com', 'admin'),
-(7, 'chau', 'e10adc3949ba59abbe56e057f20f883e', 'minhchau1942004@gmail.com', 'admin');
+(17, 'Fan MU thốt lên 1 điều khi Antony lập siêu phẩm vô lê', 'Antony của Manchester United tiếp tục ghi dấu ấn trong thời gian thi đấu dưới dạng cho mượn tại Real Betis.\r\nCầu thủ chạy cánh Antony đang cho thấy phong độ ấn tượng trong quãng thời gian được cho mượn tại Real Betis.\r\nGia nhập Manchester United vào năm 2022 với mức phí chuyển nhượng lên tới 86 triệu Bảng từ Ajax, Antony từng được kỳ vọng sẽ trở thành ngôi sao sáng tại Old Trafford. Tuy nhiên, tuyển thủ Brazil đã không đáp ứng được kỳ vọng khi chỉ ghi được 12 bàn thắng và có 5 pha kiến tạo sau 96 lần ra sân.\r\nCầu thủ 25 tuổi dần mất vị trí kể từ khi HLV Ruben Amorim tiếp quản băng ghế chỉ đạo và đã được đem cho Betis mượn trong kỳ chuyển nhượng tháng 1.\r\nThế nhưng, tại Tây Ban Nha, Antony như lột xác. Anh đã có 6 bàn thắng và 4 kiến tạo sau 17 lần ra sân trên mọi đấu trường – một phong độ ấn tượng vượt xa những gì từng thể hiện tại Man Utd.\r\nTrong trận đấu mới nhất gặp Girona tại vòng 32 La Liga, Antony tiếp tục toả sáng khi đóng góp một bàn thắng giúp Real Betis giành chiến thắng 3-1 ngay trên sân khách. Đáng chú ý, pha lập công của anh đến từ một cú vô-lê chân phải (chân không thuận) sau đường tạt bóng tuyệt đẹp của Romain Perraud ở phút 39.\r\nBàn thắng này khiến người hâm mộ Quỷ đỏ không khỏi bất ngờ, nhiều người thậm chí đã kêu gọi đội bóng trao cho Antony thêm một cơ hội ở mùa giải tới.\r\nMột cổ động viên viết trên mạng xã hội: \"Đã đến lúc phải nhìn lại Manchester United và tự hỏi: tại sao chúng ta lại lãng phí quá nhiều tài năng đến vậy?\"\r\n', '2025-04-22 07:31:43', 'Screenshot 2025-04-22 121133.png', 3, 8, 'He A');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
-
---
--- Chỉ mục cho bảng `chuyenmuc`
---
-ALTER TABLE `chuyenmuc`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `comments`
---
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `news_id` (`news_id`);
 
 --
 -- Chỉ mục cho bảng `news`
@@ -169,49 +72,18 @@ ALTER TABLE `news`
   ADD KEY `fk_chuyenmuc` (`chuyenmuc_id`);
 
 --
--- Chỉ mục cho bảng `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
-
---
--- AUTO_INCREMENT cho bảng `chuyenmuc`
---
-ALTER TABLE `chuyenmuc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT cho bảng `comments`
---
-ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT cho bảng `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
-
---
--- Các ràng buộc cho bảng `comments`
---
-ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`);
 
 --
 -- Các ràng buộc cho bảng `news`
