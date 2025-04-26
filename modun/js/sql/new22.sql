@@ -1,57 +1,225 @@
-CREATE DATABASE IF NOT EXISTS tintuc;
-USE tintuc;
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th4 22, 2025 lúc 10:45 AM
+-- Phiên bản máy phục vụ: 10.4.20-MariaDB
+-- Phiên bản PHP: 8.0.9
 
--- Bảng người dùng
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE,
-    password VARCHAR(100),
-    email VARCHAR(100)
-);
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
--- Bảng tin tức
-CREATE TABLE news (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    tieude VARCHAR(255),
-    noidung TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
-ALTER TABLE users ADD role ENUM('admin', 'user') DEFAULT 'user';
-INSERT INTO users (username, password, email, role) 
-VALUES ('admin', MD5('admin123'), 'admin@example.com', 'admin');
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-CREATE TABLE comments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    news_id INT,
-    username VARCHAR(50),
-    content TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (news_id) REFERENCES news(id)
-);
+--
+-- Cơ sở dữ liệu: `new22`
+--
 
-ALTER TABLE news ADD image VARCHAR(255);
+-- --------------------------------------------------------
 
-ALTER TABLE news ADD views INT DEFAULT 0;
+--
+-- Cấu trúc bảng cho bảng `chuyenmuc`
+--
 
-CREATE TABLE chuyenmuc (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ten VARCHAR(255) NOT NULL,
-    mota TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+CREATE TABLE `chuyenmuc` (
+  `id` int(11) NOT NULL,
+  `ten` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `mota` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Cập nhật bảng news để liên kết với chuyên mục
-ALTER TABLE news ADD COLUMN chuyenmuc_id INT NOT NULL;
-ALTER TABLE news ADD CONSTRAINT fk_chuyenmuc FOREIGN KEY (chuyenmuc_id) REFERENCES chuyenmuc(id);
+--
+-- Đang đổ dữ liệu cho bảng `chuyenmuc`
+--
 
--- Thêm 6 chuyên mục mặc định
-INSERT INTO chuyenmuc (ten) VALUES
-('Thời sự'),
-('Chính trị'),
-('Y tế'),
-('Giáo dục'),
-('Khoa học'),
-('Giải trí');
--- Thêm trường tên tác giả vào bảng news
-ALTER TABLE news ADD author VARCHAR(100);
+INSERT INTO `chuyenmuc` (`id`, `ten`, `mota`, `created_at`) VALUES
+(1, 'Thời sự', NULL, '2025-04-21 20:03:56'),
+(2, 'Chính trị', NULL, '2025-04-21 20:03:56'),
+(3, 'Y tế', NULL, '2025-04-21 20:03:56'),
+(4, 'Giáo dục', NULL, '2025-04-21 20:03:56'),
+(5, 'Khoa học', NULL, '2025-04-21 20:03:56'),
+(6, 'Giải trí', NULL, '2025-04-21 20:03:56'),
+(7, 'Xe', NULL, '2025-04-21 20:03:56'),
+(8, 'Thể thao', NULL, '2025-04-21 20:03:56');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `news_id` int(11) DEFAULT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `content` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `comments`
+--
+
+INSERT INTO `comments` (`id`, `news_id`, `username`, `content`, `created_at`) VALUES
+(1, 7, 'admin', 'yeahhhhhh', '2025-04-21 20:37:31'),
+(2, 5, 'admin', 'nhanh quáaaaaaaaaaaaaaaaaaaaaaaa', '2025-04-21 20:37:50'),
+(3, 6, 'admin', 'amazinggggggggggggggggggggggggg', '2025-04-21 20:38:12'),
+(4, 4, 'admin', 'hông biết............', '2025-04-21 20:38:33'),
+(5, 3, 'admin', 'giỏi quáaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2025-04-21 20:38:52'),
+(6, 2, 'admin', 'thật bất ngờ!!!!!!!!!!!!!!!!!!!!!!!!!!!!', '2025-04-21 20:39:33'),
+(7, 17, 'abc', 'hay quá.........', '2025-04-22 08:03:12');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `news`
+--
+
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL,
+  `tieude` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `noidung` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `views` int(11) DEFAULT 0,
+  `chuyenmuc_id` int(11) NOT NULL,
+  `author` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `news`
+--
+
+INSERT INTO `news` (`id`, `tieude`, `noidung`, `created_at`, `image`, `views`, `chuyenmuc_id`, `author`) VALUES
+(2, 'Thí sinh đăng ký thi tốt nghiệp THPT từ hôm nay', 'Học sinh lớp 12 và thí sinh tự do có 8 ngày đăng ký thi tốt nghiệp THPT, từ ngày 21/4 đến 17h ngày 28/4.\r\n\r\nTheo hướng dẫn của Bộ Giáo dục và Đào tạo, thí sinh sử dụng tài khoản đăng nhập hệ thống đã được các Sở và trường THPT cấp. Sau đó, các em đăng ký thi trực tuyến trên hệ thống của Bộ tại: http://thisinh.thitotnghiepthpt.edu.vn.\r\n\r\nNếu chưa đăng nhập lần nào, thí sinh nên đổi mật khẩu để bảo mật, rồi điền thông tin theo yêu cầu. Các thông tin này tương tự phiếu đăng ký dự thi trực tiếp (Hướng dẫn cách điền).\r\n\r\nThí sinh tự do cũng có thể đăng ký trực tuyến bằng cách đăng nhập Cổng dịch vụ công quốc gia, thay vì chỉ bằng hình thức trực tiếp như các năm trước.\r\n\r\nNếu gặp lỗi hay vướng mắc, thí sinh gọi tới hotline 18008000 nhánh số 2 để được tư vấn.\r\nKỳ thi tốt nghiệp THPT năm 2025 diễn ra trong hai ngày 26-27/6, dự kiến có hơn 1,1 triệu thí sinh, tăng khoảng 40.000 so với năm ngoái.\r\n\r\nNhóm thí sinh thi tốt nghiệp lần đầu theo chương trình giáo dục phổ thông 2018 phải làm bốn bài thi, bắt buộc có Toán và Ngữ văn. Ngoài ra, các em chọn hai môn đã học ở trường (Hóa học, Vật lý, Sinh học, Địa lý, Lịch sử, Giáo dục kinh tế và pháp luật, Tin học, Công nghệ và Ngoại ngữ).\r\n\r\nTrong công thức tính điểm xét tốt nghiệp, điểm các môn thi chiếm 50%; còn lại là điểm học bạ lớp 10, 11, 12 (50%) và điểm ưu tiên nếu có. So với trước, điểm học bạ tăng 20%.\r\n\r\nThí sinh thi theo chương trình cũ (chương trình 2006) sẽ làm bài Ngữ văn, Toán, Ngoại ngữ, cùng một trong hai bài Khoa học tự nhiên (Vật lý, Hóa học, Sinh học) và Khoa học xã hội (Lịch sử, Địa lý, Giáo dục công dân).\r\n\r\nĐiểm thi tốt nghiệp THPT năm 2025 được công bố ngày 16/7. Năm ngoái, khoảng 99,4% trong hơn một triệu thí sinh đỗ tốt nghiệp, là tỷ lệ cao nhất kể từ năm 2015, khi kỳ thi được đổi mới.', '2025-04-21 20:09:34', 'Screenshot 2025-04-22 023112.png', 2, 4, 'Nguyễn Trà My'),
+(3, 'Nam sinh Học viện Kỹ thuật quân sự đổi màu huy chương Olympic Toán', 'Duy trì thói quen tự học Toán 1-2 tiếng mỗi tối, Phan Văn Lưu giành huy chương vàng Đại số tại kỳ thi Olympic Toán học toàn quốc, sau khi giành bạc cách đây một năm.\r\n\r\nPhan Văn Lưu, 20 tuổi, quê Hà Tĩnh, là sinh viên năm thứ hai chuyên ngành An ninh hệ thống thông tin, thuộc chương trình đào tạo kỹ sư quân sự chất lượng cao, Học viện Kỹ thuật quân sự.\r\n\r\nĐầu tháng 4, Lưu lần thứ hai góp mặt trong đội tuyển của trường tham dự kỳ thi Olympic Toán học sinh viên toàn quốc. Đạt 22/30 điểm môn Đại số, nam sinh giành huy chương vàng, vượt mức yêu cầu 4,5 điểm.\r\n\r\n\"Minh vui vì đã đổi được màu huy chương thành công như mục tiêu đã đặt ra\", Lưu nói.\r\nLưu kể yêu thích môn Toán từ nhỏ. Nam sinh có thể ngồi hàng giờ đồng hồ để suy nghĩ một bài toán khó và luôn cảm thấy phấn khích khi tìm ra đáp án. Với điểm số tốt, Lưu hai lần được đi thi học sinh giỏi cấp tỉnh khi học ở trường THPT Nguyễn Văn Trỗi, huyện Lộc Hà, tỉnh Hà Tĩnh, giành một giải khuyến khích và một giải ba.\r\n\r\nTrúng tuyển Học viện Kỹ thuật quân sự năm 2022 với 26,73 điểm tổ hợp Toán, Lý, Hoá, Lưu được phân theo học một trong những chương trình có yêu cầu cao về học thuật và kỷ luật quân sự.\r\n\r\nHọc chuyên ngành An ninh hệ thống thông tin, Lưu tiếp tục gắn bó với môn Toán trong năm đầu, ở cả lĩnh vực Đại số và Giải tích. Vì vậy, khi trường tổ chức chọn học viên tham dự Olympic Toán học toàn quốc, nam sinh đăng ký ngay.\r\n\r\nNăm nay, Lưu có hơn 4 tháng ôn luyện cùng đội tuyển của trường với tần suất 4 buổi một tuần. Ngoài ra, Lưu dành 1-2 tiếng tự học mỗi tối. Nam sinh cho hay luôn học lý thuyết trước, rồi luyện đề và giải bài tập. Thấy chưa vững phần nào, Lưu nghiền ngẫm, tìm thêm tài liệu, chuyên đề nâng cao để tìm ra phương pháp làm.\r\n\r\nDo đặc thù trường quân đội, học viên phải học tập, rèn luyện theo quy định. Vì thế, thời gian tự học của Lưu không được nhiều như sinh viên các trường khác. Để học hiệu quả, Lưu cho hay cần biết cách sắp xếp thời gian và tập trung cao độ.\r\nTrung úy Dương Huy Hoàng, Phó đại đội trưởng Đại đội Kỹ sư quân sự chất lượng cao, đánh giá Lưu có thế mạnh ở việc này. Thời gian chuẩn bị thi Olympic Toán, Lưu tranh thủ buổi tối để ôn luyện thêm.\r\n\r\n\"Có những hôm sau giờ sinh hoạt, Lưu xin phép ở lại phòng học một mình để luyện đề, tự ghi chú và tìm hiểu tài liệu nâng cao\", anh Hoàng kể. Ngoài ra, anh đánh giá cao Lưu ở tinh thần khiêm tốn, chín chắn, luôn sẵn sàng hỗ trợ người khác.\r\n\r\nNhờ rèn luyện mỗi ngày, Lưu bình tĩnh bước vào kỳ thi. Trước giờ bắt đầu khoảng 30 phút, ban tổ chức thông báo thí sinh không được dùng máy tính, Lưu nhận thấy sẽ gặp nhiều khó khăn nhưng không hoang mang.\r\n\r\n\"Môn Đại số cần tính toán nhiều. Không có máy tính thì việc tính toán sẽ chậm hơn một chút. Nhưng mình từng luyện giải đề mà không dùng máy rồi nên thấy không vấn đề gì\", Lưu cho hay.\r\n\r\nNam sinh đánh giá đề năm nay khó và có tính thực tế cao hơn năm trước. Lưu hoàn thành cả 5 bài trong ba tiếng. Nhưng khi ra khỏi phòng thi, Lưu phát hiện sai ít nhất một câu trong bài tổ hợp.\r\n\r\n\"Mình hơi tiếc vì không đạt 24-25 điểm như kỳ vọng\", Lưu nói.\r\nTrở về trường sau kỳ thi Olympic Toán học toàn quốc, Lưu giữ thói quen tự học, Với môn Toán, Lưu cho rằng cần có sự yêu thích, tìm tòi, tư duy logic mới có thể học tốt. Lưu thường giải nhiều bài toán, chơi cờ vua, cờ tướng để rèn luyện tư duy. Dù vậy, nam sinh không có ý định dự thi Olympic Toán học vào năm sau.\r\n\r\n\"Mình sẽ tập trung học các môn chuyên ngành, nâng cao khả năng tiếng Anh và dành thời gian tham gia nghiên cứu khoa học\", Lưu nói.', '2025-04-21 20:10:40', 'Screenshot 2025-04-22 023242.png', 20, 4, 'Nguyễn Trà My'),
+(4, 'Không giỏi máy tính có học được ngành Khoa học dữ liệu không?', 'Em thích Khoa học dữ liệu nhưng lo ngành này khó và cần giỏi máy tính.\r\n\r\nNăm nay em học lớp 12, dự định theo ngành Khoa học dữ liệu của Đại học Kinh tế. Hiện AI (trí tuệ nhân tạo) và công nghệ thông tin rất phát triển. Em lại đam mê kinh tế nên kỳ vọng vào ngành này.\r\n\r\nTuy nhiên, em lăn tăn nếu không giỏi lắm về máy tính thì có học được không? Mong mọi người cho em lời khuyên.', '2025-04-21 20:11:24', 'khdl.jpg', 2, 4, 'Nguyễn Trà My'),
+(5, 'ĐH Khoa học Tự nhiên Hà Nội lần đầu tuyển sinh ngành Công nghệ bán dẫn', 'Trường Đại học Khoa học Tự nhiên, Đại học Quốc gia Hà Nội, lần đầu tuyển sinh chương trình Công nghệ bán dẫn với 140 chỉ tiêu, bằng 7 tổ hợp.\r\n\r\nĐại học Quốc gia Hà Nội ngày 19/4 cho biết ngành Công nghệ bán dẫn của trường Đại học Khoa học Tự nhiên sẽ xét tuyển theo điểm thi tốt nghiệp THPT ở các tổ hợp: A00 (Toán, Lý, Hóa), A01 (Toán, Lý, Anh), A02 (Toán, Lý, Sinh), B00 (Toán, Hóa, Sinh), C01 (Toán, Lý, Văn), C02 (Toán, Hóa, Văn) và D07 (Toán, Hóa, Anh).\r\n\r\nNgoài ra, trường dự kiến dùng một số phương thức khác, gồm: xét tuyển thẳng và ưu tiên xét tuyển; dựa vào điểm bài thi đánh giá năng lực HSA của Đại học Quốc gia Hà Nội; xét chứng chỉ quốc tế (SAT, A-Level, ACT); kết hợp điểm thi tốt nghiệp và chứng chỉ ngoại ngữ quốc tế.\r\n\r\nChương trình đào tạo Công nghệ bán dẫn của trường Khoa học Tự nhiên được chia làm ba định hướng: Công nghệ chế tạo linh kiện bán dẫn và IC, Công nghệ đóng gói và kiểm thử linh kiện bán dẫn, Công nghệ vật liệu bán dẫn.\r\n\r\nDù lần đầu tuyển sinh, thực tế trường Đại học Khoa học Tự nhiên đã đào tạo các ngành liên quan bán dẫn hàng chục năm qua. Đây cũng là trường đầu tiên ở Việt Nam có chương trình liên kết quốc tế đào tạo thạc sĩ Công nghệ bán dẫn, từ năm 2019.\r\n\r\nSinh viên tốt nghiệp có cơ hội làm việc tại các công ty hàng đầu về sản xuất chip và linh kiện bán dẫn như Micron, Intel, Foxconn, Samsung Electronics, LG Display, Canon, Nissan hay các tập đoàn công nghệ cao như FPT, Viettel, VNPT.\r\nTheo tính toán của các nhà quản lý, đến năm 2030, ngành công nghiệp bán dẫn của Việt Nam cần khoảng 15.000 kỹ sư cho khâu thiết kế và 35.000 nhân lực ở công đoạn sản xuất và đóng gói kiểm tra.\r\n\r\nĐứng trước nhu cầu lớn, nhiều đại học dự kiến mở chuyên ngành vi mạch bán dẫn trong năm nay như Đại học Việt Nhật, Sư phạm Hà Nội với chỉ tiêu khoảng 100-120 sinh viên ở mỗi trường.', '2025-04-21 20:12:13', 'Screenshot 2025-04-22 022838.png', 3, 4, 'Nguyễn Trà My'),
+(6, 'Nữ sinh Việt trong top 4 học bổng 100% đại học Australia', 'Khởi nghiệp với cây chè, cùng điểm học bạ đạt 9,9/10, Thanh Tú là một trong 4 học sinh trên thế giới giành học bổng 100% học phí của Đại học Monash.\r\n\r\nChu Thanh Tú, học sinh lớp 12 Anh 1, trường THPT Hà Nội - Amsterdam, biết tin được học bổng Monash International Leadership, hôm 17/4. Theo thông tin trên website, mỗi năm, Đại học Monash cấp 4 suất này cho sinh viên quốc tế.\r\n\r\n\"Em hạnh phúc vô cùng. Em trúng tuyển ngành Thương Mại\", Tú nói, cho biết học bổng có ý nghĩa lớn, giúp giảm áp lực tài chính cho gia đình khi em du học. Trên bảng xếp hạng QS 2025, Đại học Monash ở vị trí 37 thế giới và thứ 5 tại Australia.\r\n\r\nNgoài ra, Tú còn giành học bổng cho sinh viên quốc tế của Đại học Sydney, đỗ Đại học Melbourne và Queensland, đều ở Australia.\r\nTú bắt tay chuẩn bị hồ sơ từ năm lớp 9, tập trung học và tích cực hoạt động ngoại khóa. Nhờ nỗ lực và có kế hoạch, em đạt điểm trung bình học tập (GPA) 9,9/10, chứng chỉ SAT 1590/1600 và IELTS 8.0.\r\n\r\nVới hoạt động ngoại khóa, dự án nổi bật của nữ sinh là kết hợp phân phối sản phẩm chè xanh, năm 2022.\r\n\r\nTú cho hay gia đình có vườn chè ở Thạch Thất. Thỉnh thoảng, em về hái lá chè xanh mang bán cho các gia đình ở chung cư. Trong một lần cùng mẹ tới quán của một nghệ nhân trà ở Thái Nguyên, Tú được nghe chia sẻ về văn hóa trà của người Việt, về tình yêu với cây chè và các sản phẩm từ nó. Được truyền cảm hứng, em và anh trai nảy ra ý tưởng làm dự án về trà.\r\n\r\nEm cho biết mục tiêu chính là lan tỏa văn hóa uống trà của người Việt đến giới trẻ, trở thành cầu nối giúp nông dân đưa sản phẩm sạch đến người tiêu dùng. Ngoài ra, em cũng quan tâm đến matcha (bột lá chè xanh nghiền mịn) - một sản phẩm nổi tiếng của Nhật Bản.\r\n\r\nTú liền đến một hợp tác xã ở Thái Nguyên, được công nhân hướng dẫn chăm sóc cây chè và tự tay tham gia từng khâu ở xưởng để hiểu quy trình sản xuất. Sau buổi đó, anh em Tú đăng ký thành lập doanh nghiệp xã hội Máttrà, nhờ bố đứng tên vì chưa đủ 18 tuổi. Hợp tác xã sẽ phụ trách khâu sản xuất, còn Tú và anh phân phối sản phẩm.\r\n\r\n\"Máttrà (matcha) vừa là đồ uống yêu thích, vừa mang nghĩa trà xanh mát lành\", Tú giải thích, cho biết tự thiết kế logo cho sản phẩm.\r\n\r\nAnh em Tú được bố mẹ hỗ trợ vốn và đầu tư máy sao chè để tổ chức buổi giới thiệu văn hóa trà Việt cho học sinh, sinh viên tại vườn chè của gia đình. Theo nữ sinh, bố mẹ động viên và tạo điều kiện, còn hai anh em tự lên kế hoạch và thực hiện.\r\n\r\n\"Khó nhất là quảng bá và tiêu thụ sản phẩm\", Tú nói.\r\n\r\nNăm 2023, sản phẩm matcha ra đời, nữ sinh bán qua Facebook cá nhân, Shopee và mang tới các hội chợ. Mỗi gói 100 gram có giá 140.000 đồng. Tuy nhiên, các đơn hàng không nhiều, cả tuần chỉ 1-2 đơn, theo Tú là bởi có quá nhiều sản phẩm tương tự, giá cả lại cạnh tranh.\r\n\r\nBuồn và hụt hẫng song trải nghiệm giúp Tú hiểu rằng khởi nghiệp và kinh doanh phải đối mặt với nguy cơ thất bại, quan trọng là đứng lên từ đó. Nữ sinh tiếp tục tìm hiểu các kênh giới thiệu sản phẩm, xây dựng tệp khách hàng ổn định, chủ yếu là bạn bè, người quen của gia đình, có nhu cầu sử dụng bột matcha để uống hoặc làm bánh.\r\n\r\nTú cho biết lợi nhuận được dùng làm từ thiện. Em quay về vùng nguyên liệu Thái Nguyên, trao học bổng trị giá mỗi suất một triệu đồng cho 10 em nhỏ có hoàn cảnh khó khăn. Năm ngoái, em trích 5 triệu đồng hỗ trợ một bệnh nhi ở Điện Biên xuống Hà Nội chữa bệnh.\r\n\r\n\"Em muốn làm từ thiện bằng chính sức lao động của mình\", Tú chia sẻ.\r\n\r\nTú cũng gửi dự án tham gia cuộc thi phát minh sáng chế quốc tế INOVA Croatia 2024 và giành giải vàng hạng mục khởi nghiệp. Đây cũng là điểm nhấn trong hồ sơ ứng tuyển các đại học Australia của Tú.\r\n\r\nĐại học Monash không yêu cầu ứng viên viết bài luận, xét học bổng dựa trên điểm số cùng hoạt động ngoại khóa. Trong cuộc phỏng vấn với trường hồi đầu tháng 4, nữ sinh được hỏi về những đóng góp cho cộng đồng. Tú ấn tượng khi được hỏi: \"Nếu được học bổng, em sẽ làm gì cho Monash?\".\r\n\r\nNữ sinh nói vì không phải lo đóng học phí nên có nhiều thời gian tập trung cho việc học. Kết quả tốt sẽ góp phần quảng bá cho hình ảnh của trường. Ngoài ra, em sẽ lập các kênh để chia sẻ về cuộc sống, kinh nghiệm học tập, giành học bổng giúp nhiều người biết tới Monash hơn.\r\n\r\nCô Kate Phạm, cố vấn của Tú, cho biết ngoài điểm số, hồ sơ của em khác biệt ở hoạt động ngoại khóa, cụ thể là dự án về trà. Điều này khớp với tiêu chí cấp học bổng của Đại học Monash, để tìm kiếm ứng viên có tố chất lãnh đạo, không chỉ học tốt mà còn dám nghĩ, dám làm và giúp đỡ cộng đồng.\r\n\r\nCuối tháng 7 tới, Tú sẽ sang Australia nhập học. Em mong tìm học bổng để học lên thạc sĩ sau tốt nghiệp. Với dự án chè, Tú tính tuyển nhân sự hỗ trợ, còn mình và anh điều hành từ xa.', '2025-04-21 20:13:29', 'Screenshot 2025-04-22 031320.png', 4, 4, 'Nguyễn Trà My'),
+(7, 'Mốc thời gian đăng ký tuyển sinh lớp 1, 6 ở TP HCM', 'TP HCM mở đăng ký tuyển sinh từ ngày 24/5, hoàn thành trong tháng 6, sớm hai tháng so với mọi năm.\r\n\r\nNgày 17/4, UBND TP HCM công bố kế hoạch tổ chức tuyển sinh đầu cấp.\r\n\r\nTheo đó, ban chỉ đạo tuyển sinh đầu cấp quận, huyện sẽ phân bổ chỗ học căn cứ tình hình trường lớp, số trẻ trong độ tuổi đi học, nơi ở thực tế của các em, không phụ thuộc vào ranh giới hành chính.\r\n\r\nSau khi Phòng Giáo dục và Đào tạo cập nhật thông tin tuyển sinh, phụ huynh bắt đầu đăng ký chỗ học cho con từ ngày 24-29/5. Kết quả đợt đầu sẽ được công bố vào ngày 14/6. Sau đó, địa phương tiếp tục xét đợt 2 đến cuối tháng 6.\r\n\r\nThời gian đăng ký, xét tuyển sinh lớp 1, 6 ở TP HCM như trên: \r\n\r\nSở Giáo dục và Đào tạo TP HCM cho hay chia học sinh đầu cấp theo hai nhóm. Nhóm 1 là học sinh có nơi ở thuộc địa bàn, trong độ tuổi quy định. Nhóm 2 là những em có nguyện vọng học tại khu vực không thuộc nơi cư trú.\r\n\r\nTừ năm ngoái, TP HCM tuyển sinh đầu cấp theo nguyên tắc \"học gần nhà\", chứ không chia theo địa giới hành chính phường, xã. Căn cứ khả năng tiếp nhận, số lượng trẻ trong độ tuổi lớp 1, 6 và nơi ở hiện tại của học sinh, các địa phương sẽ bố trí chỗ học linh hoạt, thuận tiện cho các em và gia đình đi lại, đưa đón.\r\n\r\nHiện, TP HCM có khoảng 1,7 triệu học sinh, từ mầm non đến phổ thông.', '2025-04-21 20:15:34', 'Screenshot 2025-04-22 031500.png', 6, 4, 'Nguyễn Trà My'),
+(8, 'VinFast, xe điện hóa, xe Trung Quốc khuấy động thị trường ôtô Việt đầu 2025', 'Ba tháng qua, những mẫu xe điện VinFast thống trị doanh số thị trường nói chung, bên cạnh đó là màn chào sân của nhiều mẫu xe Trung Quốc mới.\r\n\r\nTheo số liệu của Hiệp hội các nhà sản xuất ôtô Việt Nam (VAMA) và Hyundai Thành Công, thị trường quý đầu 2025 tiêu thụ 83.715 xe, tăng 22% so với cùng kỳ năm ngoái. Nếu cộng thêm 34.600 xe của VinFast, doanh số toàn ngành đạt 118.315 xe, tương đương gần 2.000 xe bán ra mỗi ngày và một xe bán ra mỗi phút.\r\n\r\nDoanh số thị trường khởi sắc đầu 2025 nhờ nhiều yếu tố. Trong đó, điểm nhấn chính là mức bán vượt trội VinFast so với các đối thủ và làn sóng đổ bộ của xe Trung Quốc. Thị trường cũng chứng kiến sức hút xe Hàn tiếp tục đi xuống, ngược lại là xu hướng xe điện hóa ngày càng tăng lên.\r\nTháng 3, doanh số của VinFast đạt hơn 12.100 xe. Không một hãng đối thủ nào đạt đến ngưỡng bán này, dù tính tổng cộng cả quý. Với 34.600 xe bán ra trong quý đầu, VinFast tạo ra khoảng cách tới 23.200 xe với đối thủ xếp gần nhất, Toyota, con số gấp gần 6 lần lượng bán trung bình tháng của hãng Nhật.\r\n\r\nSở hữu hệ sinh thái trạm sạc lớn nhất cả nước, VinFast chủ động trong cuộc chơi ở mảng xe điện. Cuối tháng 2 đầu tháng 3, VinFast thông báo ngừng chính sách thuê pin và giảm giá bán lẻ tất cả các dòng xe từ hàng chục đến hàng trăm triệu đồng.\r\n\r\nChính sách miễn phí sạc pin đến giữa 2027 kích thích nhu cầu sắm xe điện của người dân, đặc biệt với những khách hàng cá nhân muốn có xe để kinh doanh dịch vụ. Nhiều công ty chuyển sang dùng xe điện thay cho xe xăng, dầu để kinh doanh cũng giúp VinFast có thêm nguồn cung, tạo đà doanh số tăng mạnh. Vì vậy, doanh số của hãng này có phần đóng góp không nhỏ của các hãng kinh doanh taxi.\r\nVF 3 và VF 5 là hai mẫu xe bán chạy nhất của VinFast với doanh số lần lượt 12.900 xe và 10.700 xe. Lượng bán của VF 3 thậm chí lớn hơn các thương hiệu bán toàn bộ dải sản phẩm trong cả quý đầu 2025.\r\n\r\nTrong nửa sau 2025, VinFast sẽ giới thiệu hàng loạt sản phẩm mới của dòng Green với thiết kế và công năng tối ưu hóa cho mục đích kinh doanh dịch vụ. Hai trong số đó là Minio, mẫu xe siêu nhỏ giá 269 triệu đồng và Limo, MPV 7 chỗ giá 749 triệu đồng, lần đầu tiên xuất hiện tại Việt Nam.\r\n\r\nXe điện hóa tiếp tục nở rộ\r\n\r\nNgoài khía cạnh doanh số khi VinFast, thương hiệu chỉ bán xe điện, dẫn đầu toàn ngành và ba trong top 10 xe bán chạy cũng đều thuộc hãng này, mảng xe điện hóa tiếp tục đa dạng hóa lựa chọn ở quý đầu 2025. Nhiều sản phẩm ra mắt thị trường đều là dạng hybrid thực thụ hoặc thuần điện.\r\nSau CR-V và Civic, Honda tiếp tục \"hybrid hóa\" dải sản phẩm của hãng tại Việt Nam bằng chiếc HR-V nhập Thái Lan. Với ba sản phẩm hybrid, Honda hiện là thương hiệu có số lượng xe hybrid nhiều thứ hai thị trường phổ thông sau Toyota (6 xe hybrid).\r\n\r\nOmoda bán chiếc J7 ở phân khúc CUV cỡ C với hai lựa chọn. Trong đó, bản PHEV cao cấp nhất, giá ban đầu 999 triệu đồng. Sau đó, hãng giảm xuống còn 879 triệu đồng (áp dụng 18/4-31/7). Đối thủ cạnh tranh với J7 là mẫu xe đồng hương BYD Sealion (839-969 triệu đồng) vừa ra mắt giữa tháng 4. BYD bán giá đặc biệt 799-899 triệu đồng cho 1.000 khách đầu tiên mua Sealion 6.\r\n\r\nSealion 6 là mẫu xe hybrid đầu tiên của BYD tại Việt Nam, trước đó là loạt xe thuần điện. Hai phiên bản của Sealion 6 đều là loại PHEV.\r\n\r\nỞ phân khúc thấp hơn là CUV cỡ B+, nhà phân phối Thành An giới thiệu chiếc Haval Jolion chỉ lắp máy hybrid cho hai biến thể. Lựa chọn xe hybrid ở phân khúc này cho khách Việt trở nên phong phú hơn, bên cạnh Toyota Corolla Cross, Subaru Crosstrek. Đi cùng là các sản phẩm thuần điện như MG4 EV, VinFast VF 6, BYD Atto 3.\r\n\r\nXe Trung Quốc đổ bộ hàng loạt\r\n\r\nTrong ba tháng đầu 2025, khoảng 14 mẫu xe mới ra mắt khách Việt thì 11 trong số đó là đến từ các thương hiệu Trung Quốc. Porsche 911, Skoda Kodiaq và Peugeot 2008 là ba cái tên còn lại.\r\n\r\nKhách Việt có thêm nhiều lựa chọn khi Dongfeng giới thiệu bộ tứ sản phẩm, gồm Huge, Mage, E70, Box thuộc các phân khúc sedan, CUV/SUV, dùng động cơ đốt trong, hybrid và thuần điện. Geely giới thiệu chiếc CUV cỡ B Coolray nhập khẩu Malaysia, chưa kể EX5, Monjaro có kế hoạch bán vào giữa năm.\r\nNhóm xe gầm cao cỡ B trong quý đầu 2025 còn có tân binh Haval Jolion. Omoda C5 bổ sung thêm bản giá rẻ 539 triệu đồng. Jaecoo J7 gia nhập phân khúc CUV cỡ C.\r\n\r\nPhân khúc MPV thêm phần sôi động với sự góp mặt của MG G50 với giá bán bản số sàn MT chỉ 599 triệu đồng, ngang bằng những bản thấp của các mẫu MPV cỡ nhỏ.\r\n\r\nNgoài những sản phẩm kể trên, Thành An, nhà phân phối thương hiệu GWM còn mang về hàng loạt dòng xe mới như Haval M6, Tank 300 (SUV cỡ C), Tank 500 (SUV cỡ E), Wey 80 (MPV cỡ lớn). Tuy nhiên, công ty chưa nói rõ thời điểm bán ra.\r\n\r\nXe Hàn suy yếu\r\n\r\nDanh sách 10 mẫu xe bán chạy nhất thị trường quý I hoàn toàn vắng bóng xe Hàn. Hồi 2024, chỉ có Hyundai Accent còn trụ lại nhóm những sản phẩm ăn khách hàng đầu.\r\n\r\nXe Hàn vốn mạnh ở những phân khúc giá rẻ, kích thước nhỏ như hatchback cỡ A, sedan và CUV cỡ B. Nhưng cạnh tranh khốc liệt trên thị trường hai năm qua, đặc biệt khi các đối thủ Nhật thay đổi cách định vị sản phẩm với giá bán cạnh tranh hơn, và sự trỗi dậy của VinFast ở nhóm xe gầm cao cỡ nhỏ, siêu nhỏ, khiến xe Hàn mất dần lợi thế.', '2025-04-21 20:45:13', 'Screenshot 2025-04-22 034507.png', 0, 7, 'Nguyễn Trà My'),
+(9, 'Mitsubishi khuyến mãi hàng loạt xe tháng 4', 'Chạy đua cùng các hãng như Toyota, Honda, Hyundai, thương hiệu Mitsubishi cũng giảm giá hàng loạt xe bằng hình thức ưu đãi lệ phí trước bạ.\r\n\r\nTháng 4 là tháng bắt đầu năm tài chính mới của nhiều hãng Nhật tại Việt Nam, trong đó có Mitsubishi. Tiếp nối đà tăng trưởng doanh số ở tháng 3, Mitsubishi tiếp tục khuyến mãi nhiều dòng xe để kích cầu tiêu dùng quý đầu 2025.\r\n\r\nTrừ Outlander và Pajero Sport, tất cả các mẫu xe của Mitsubishi còn lại, từ gầm thấp đến MPV hay gầm cao đều được ưu đãi 50% lệ phí trước bạ. Riêng bản MT của mẫu sedan Attrage có mức giảm giá tương đương 100% lệ phí trước bạ.\r\n\r\nVới giá bán 560-698 triệu đồng, mẫu xe chủ lực doanh số của Mitsubishi - Xpander (bao gồm bản Cross) - có mức giảm khoảng 28-35 triệu đồng. Những đối thủ cạnh tranh của Xpander như Honda BR-V, Suzuki XL7, Toyota Veloz cũng có mức giảm tương đương.\r\nMẫu CUV cỡ B bán chạy nhất phân khúc 2024, Mitsubishi là Xforce (599-705 triệu đồng) có mức khuyến mãi 32-35 triệu đồng. Đối thủ cạnh tranh số một của Xforce trong nhóm xe động cơ đốt trong, Toyota Yaris Cross, có mức giảm 28-33 triệu đồng.\r\n\r\nMẫu bán tải Triton (655-924 triệu đồng) giảm 20-28 triệu đồng nhờ ưu đãi 50% lệ phí trước bạ. Trên dòng Attrage, bản MT giá 380 triệu đồng giảm 38 triệu đồng nhờ ưu đãi 100% lệ phí trước bạ. Bản cao cấp nhất CVT Premium giá 490 triệu đồng giảm 24,5 triệu đồng.\r\n\r\nSau quý đầu 2025, doanh số Mitsubishi đạt gần 8.000 xe, tăng 31% so với cùng kỳ 2024. Lượng bán này giúp hãng Nhật đứng vị trí thứ 5 trên thị trường, sau các hãng như VinFast, Toyota, Hyundai và Ford.\r\n\r\nHai nhân tố \"X\" tiếp tục là sản phẩm chủ lực doanh số của Mitsubishi tại Việt Nam. Trong đó, Xpander, chiếc MPV bán chạy nhất tại Việt Nam góp khoảng 55% thị phần cho Mitsubishi, doanh số đạt 4.405 xe sau ba tháng đầu 2025. Còn lại là Xforce, mẫu xe gầm cao cỡ B bán 1.933 xe, góp 24% thị phần.', '2025-04-21 20:46:10', 'Screenshot 2025-04-22 034556.png', 0, 7, 'Nguyễn Trà My'),
+(10, 'Nên mua Vision hay Future?', 'Tôi là nam, 22 tuổi, hàng ngày đi làm cách nhà 40 km cả đi về, đôi khi về quê hoặc chở bạn gái đi chơi xa. (An Thái)\r\n\r\nTôi cần mua xe Honda giá 32-40 triệu. Tôi phân vân giữa xe tay ga Vision cùng giá Future nhưng khác ở chỗ, Vision là xe tay ga nhưng chỉ 110 phân khối, còn Future xe số mà phân khối tận 125. Tôi không biết chọn xe nào cho vừa với tiêu chuẩn. Xin nhờ quý độc giả tư vấn.\r\n\r\n', '2025-04-21 20:48:52', 'Vision-the-thao.png', 0, 7, 'Nguyễn Trà My'),
+(11, 'Rolls-Royce Ghost Series II ra mắt khách Việt, giá từ 34,9 tỷ đồng', 'Rolls-Royce Ghost Series II thay đổi một số chi tiết về ngoại thất, nội thất, động cơ V12 giữ nguyên.\r\n\r\nMẫu sedan siêu sang cỡ lớn Rolls-Royce Ghost Series II ra mắt đến khách Việt ngày 17/4. Đây là phiên bản nâng cấp giữa vòng đời, có thiết kế đầu xe tương đồng với các đàn anh Phantom và Cullinan. Xe thay đổi ngoại thất và công nghệ, các chi tiết nội thất tinh chỉnh nhẹ so với thế hệ trước, và khối động cơ vẫn giữ nguyên.\r\nThay đổi ở ngoại thất là phần đèn LED ban ngày vuốt nhọn tạo ra tổng thể hiện đại, sắc sảo. Phần lưới tản nhiệt Pantheon bổ sung thêm tính năng phát sáng. Hốc hút gió mở rộng và trang trí bằng viền crôm. Đèn hậu lấy cảm hứng thiết kế của mẫu xe điện Spectre.\r\n\r\nThay đổi lớn ở nội thất của Ghost Series II là màn hình lái kỹ thuật số, liền mạch với phần màn hình thông tin giải trí cỡ lớn đặt giữa, kế bên là hộp đồng hồ chứa biểu tượng Spirit of Ecstasy thu nhỏ. Xe trang bị 18 loa công suất 1.400 W. Ngoài ra, hàng ghế sau trang bị hai màn hình hoạt động riêng biệt, gắn ở lưng hàng ghế trước.\r\n\r\nĐiểm nhấn khác của nội thất là kỹ thuật chế tác các vật liệu. Đầu tiên là sợi vải bọc ghế làm từ cây tre, với các sợi được dệt chéo, mà Rolls-Royce cho rằng một chiếc xe có thể tiêu tốn 2,2 triệu mũi khâu, gần 18 km chỉ và hơn 20 giờ để thực hiện. Tiếp theo là các thớ gỗ ốp là loại có các lỗ nhỏ li ti, sau đó các nghệ nhân trám vào những lỗ này các hạt kim loại siêu nhỏ để tạo hiệu ứng lấp lánh.\r\n\r\nVề vận hành, Ghost Series II vẫn sử dụng khối động cơ 6,75 lít V12 tăng áp kép, công suất 563 mã lực và mô-men xoắn 850 Nm, đạt được khi vòng tua chạm mức 1.600 vòng/phút. Tăng tốc 0-100 km/h trong 4,8 giây và tốc độ tối đa 250 km/h.\r\n\r\nThế hệ này còn sử dụng camera và cảm biến để phân tích điều kiện mặt đường, nhằm tinh chỉnh hệ thống treo cho phù hợp nhất. Bên cạnh đó, hệ thống truyền động có khả năng sử dụng GPS để phân tính đường đi phía trước nhằm chọn ra cấp số phù hợp, ví dụ như khi xe sắp vào đoạn cua lớn.\r\n\r\nPhiên bản Ghost Series II tiêu chuẩn có giá từ 34,9 tỷ đồng. Ngoài ra còn có phiên bản trục cơ sở dài Ghost Extended Series II giá từ 38,9 tỷ đồng, và Black Badge Ghost Series II nâng cấp sức mạnh động cơ giá từ 40,59 tỷ đồng.', '2025-04-21 20:50:59', 'Screenshot 2025-04-22 035040.png', 0, 7, 'Nguyễn Trà My'),
+(12, 'Xe điện thống trị giải thưởng Xe của năm 2025 tại Mỹ', 'Kia EV3 là Xe của năm, trong khi Hyundai Inster/Casper Electric là Xe điện của năm trong khuôn khổ giải thưởng tại New York Auto Show.\r\n\r\nKia EV3 vượt qua BMW X3 và Hyundai Inster để giành giải cao nhất, giúp Kia có danh hiệu Xe của năm lần thứ hai liên tiếp sau khi EV9 được vinh danh năm 2024. Hiện EV3 chưa được phân phối tại Mỹ, nhưng sẽ sớm có mặt nếu không gặp trở ngại về thuế quan.\r\nTrong các báo cáo tổng kết doanh số quý đầu năm 2025, EV3 cũng là xe điện bán chạy nhất ở nhiều thị trường khác nhau trên thế giới, như Hàn Quốc, Anh, Hà Lan.\r\n\r\nCũng tại triển lãm New York năm nay, xe điện có một màn trình diễn mạnh mẽ khi Volvo EX90 được xướng tên là Xe sang của năm sau khi vượt qua Porsche Macan và Porsche Panamera.\r\n\r\nMẫu crossover điện hạng sang có giá khởi điểm 79.995 USD, trang bị pin 111 kWh cùng hệ thống dẫn động 4 bánh với hai môtơ cho công suất 402 mã lực và mô-men xoắn 769 Nm. Xe có thể tăng tốc 0-97 km/h trong 5,7 giây và chạy được tối đa 499 km chỉ với một lần sạc.\r\n\r\nHyundai Inster/Casper Electric được vinh danh là Xe điện của năm. Mẫu crossover đô thị nhỏ gọn với công suất 113 mã lực.\r\nBYD Seagull/Dolphin Mini được xướng tên là Xe đô thị của năm. Mẫu hatchback có giá dưới 10.000 USD tại Trung Quốc và phiên bản Seagull Intelligent Driving Edition cung cấp phạm vi hoạt động lên đến 405 km.\r\n\r\nDanh hiệu Thiết kế xe của năm thuộc về Volkswagen ID. Buzz. Mẫu xe Đức vượt qua Kia EV3 và Toyota Land Cruiser/Land Cruiser 250 để giành giải thưởng.\r\n\r\nXe duy nhất không phải xe điện giành được giải thưởng là Porsche 911 GTS, được vinh danh là Xe hiệu suất 2025. Chiếc xe thể thao có giá khởi điểm 169.800 USD và có hệ truyền động hybrid bao gồm động cơ 3,6 lít tăng áp, 6 xi-lanh, một môtơ điện và một bộ pin nhỏ. Công suất kết hợp 532 mã lự và mô-men xoắn 608 Nm. Xe tăng tốc 0-97 km/h trong 2,9 giây trước khi đạt tốc độ tối đa 312 km/h.\r\n\r\nNgoài các giải dành cho các mẫu xe, còn một giải thưởng gây chú ý là Nhân vật của năm, thuộc về Stella Li - Phó chủ tịch BYD. Chỉ vừa mới đây, tại buổi ra mắt mẫu Denza Z9 GT tại Milan, Italy, Li tuyên bố rằng các mẫu xe mới của Denza tốt hơn gấp 10 lần so với các đối thủ mà họ muốn vượt qua, bao gồm Mercedes, Audi, BMW và có thể cả Porsche.\r\nTriển lãm ôtô New York năm nay sẽ bắt đầu từ ngày 18/4 và kết thúc vào ngày 27/4. Đây cũng là triển lãm ôtô đầu tiên ở Bắc Mỹ, được tổ chức lần đầu năm 1900 và diễn ra thường niên. New York International Auto Show cũng là sự kiện chuyên ngành có số lượng người tham dự lớn nhất Bắc Mỹ.\r\n\r\nTriển lãm năm nay kỷ niệm 125 năm ra đời, trưng bày hơn 160 xe và dự kiến thu hút gần 50.000 du khách tại Trung tâm Hội nghị Javits, thành phố New York. Một điểm đặc biệt của sự kiện là đường chạy thử chỉ dành cho xe điện. Đó là bởi New York là một trong 12 bang yêu cầu tất cả các loại xe mới bán ra phải không phát thải vào năm 2035. Điều này bao gồm yêu cầu 35% xe đời 2026 (sẽ có mặt tại các đại lý vào cuối năm nay) phải chạy hoàn toàn bằng pin.', '2025-04-21 20:52:33', 'Screenshot 2025-04-22 035142.png', 0, 7, 'Nguyễn Trà My'),
+(13, 'Toyota Wigo đe dọa ngôi vương Hyundai i10', 'Doanh số phân khúc A quý I/2025 xuống mức thấp nhất trong vòng ba năm qua, với cách biệt giữa i10 và Wigo chỉ còn gần 300 xe.\r\n\r\nTrải qua quý đầu năm, doanh số phân khúc ôtô nhỏ cỡ A tại thị trường Việt Nam không nhiều biến chuyển. Đây vẫn là một trong những phân khúc có số lượng khách hàng ít nhất, với mức bán chỉ 1.422 xe trong ba tháng đầu năm, và cũng là quý có doanh số thấp nhất trong vòng ba năm trở lại đây. Quý IV/2024 bán 3.518 xe, trong khi quý I/2024 là 2.043 xe.\r\nHyundai i10 duy trì thứ hạng đầu quen thuộc với doanh số 798 xe. Mức doanh số này giúp i10 chiếm hơn một nửa thị phần xe nhỏ cỡ A. Mẫu xe Hàn bán chạy trong nhiều năm qua vì giá tốt, có hai biến thể hatchback và sedan cho người tiêu dùng lựa chọn, cùng chi phí sử dụng thấp.\r\n\r\nXếp hạng hai là Toyota Wigo với 505 xe bán ra trong quý, chiếm hơn 35% thị phần. Mẫu xe này ra mắt từ giữa 2023, và đang càng ngày chiếm nhiều thị phần hơn. Trong năm trước, Wigo chỉ chiếm gần 29% thị phần. Nếu Wigo thu hút nhiều khách hàng hơn trong thời gian tới, xe nhỏ cỡ A sẽ là \"cuộc đua song mã\" giữa hai thương hiệu Hàn - Nhật.\r\n\r\nXếp cuối là Kia Morning, với doanh số chỉ 119 xe trong quý vừa qua, chiếm hơn 8% thị phần còn lại của phân khúc. Doanh số của Morning kể từ khi Wigo xuất hiện hiếm khi nào vượt quá hai con số. Mẫu xe Hàn đã được giới thiệu từ lâu, và chưa cập nhật phiên bản mới trong 5 năm qua.\r\nPhân khúc xe nhỏ cỡ A tại Việt Nam đang thoái trào, nhường chỗ cho những mẫu xe gầm cao cỡ nhỏ hoặc xe điện, với nhiều sự lựa chọn về kiểu dáng, thương hiệu, mức giá cho khách hàng hơn. Ở các xe gầm thấp, sedan cỡ B là phân khúc hiếm hoi vẫn thu hút lượng lớn khách hàng trong những năm qua.', '2025-04-21 20:54:44', 'Screenshot 2025-04-22 035439.png', 2, 7, 'Nguyễn Trà My'),
+(14, 'Rolls-Royce Ghost Series II ra mắt khách Việt, giá từ 34,9 tỷ đồng', 'Rolls-Royce Ghost Series II thay đổi một số chi tiết về ngoại thất, nội thất, động cơ V12 giữ nguyên.\r\n\r\nMẫu sedan siêu sang cỡ lớn Rolls-Royce Ghost Series II ra mắt đến khách Việt ngày 17/4. Đây là phiên bản nâng cấp giữa vòng đời, có thiết kế đầu xe tương đồng với các đàn anh Phantom và Cullinan. Xe thay đổi ngoại thất và công nghệ, các chi tiết nội thất tinh chỉnh nhẹ so với thế hệ trước, và khối động cơ vẫn giữ nguyên.\r\nThay đổi ở ngoại thất là phần đèn LED ban ngày vuốt nhọn tạo ra tổng thể hiện đại, sắc sảo. Phần lưới tản nhiệt Pantheon bổ sung thêm tính năng phát sáng. Hốc hút gió mở rộng và trang trí bằng viền crôm. Đèn hậu lấy cảm hứng thiết kế của mẫu xe điện Spectre.\r\n\r\nThay đổi lớn ở nội thất của Ghost Series II là màn hình lái kỹ thuật số, liền mạch với phần màn hình thông tin giải trí cỡ lớn đặt giữa, kế bên là hộp đồng hồ chứa biểu tượng Spirit of Ecstasy thu nhỏ. Xe trang bị 18 loa công suất 1.400 W. Ngoài ra, hàng ghế sau trang bị hai màn hình hoạt động riêng biệt, gắn ở lưng hàng ghế trước.\r\n\r\nĐiểm nhấn khác của nội thất là kỹ thuật chế tác các vật liệu. Đầu tiên là sợi vải bọc ghế làm từ cây tre, với các sợi được dệt chéo, mà Rolls-Royce cho rằng một chiếc xe có thể tiêu tốn 2,2 triệu mũi khâu, gần 18 km chỉ và hơn 20 giờ để thực hiện. Tiếp theo là các thớ gỗ ốp là loại có các lỗ nhỏ li ti, sau đó các nghệ nhân trám vào những lỗ này các hạt kim loại siêu nhỏ để tạo hiệu ứng lấp lánh.\r\n\r\nVề vận hành, Ghost Series II vẫn sử dụng khối động cơ 6,75 lít V12 tăng áp kép, công suất 563 mã lực và mô-men xoắn 850 Nm, đạt được khi vòng tua chạm mức 1.600 vòng/phút. Tăng tốc 0-100 km/h trong 4,8 giây và tốc độ tối đa 250 km/h.\r\n\r\nThế hệ này còn sử dụng camera và cảm biến để phân tích điều kiện mặt đường, nhằm tinh chỉnh hệ thống treo cho phù hợp nhất. Bên cạnh đó, hệ thống truyền động có khả năng sử dụng GPS để phân tính đường đi phía trước nhằm chọn ra cấp số phù hợp, ví dụ như khi xe sắp vào đoạn cua lớn.\r\n\r\nPhiên bản Ghost Series II tiêu chuẩn có giá từ 34,9 tỷ đồng. Ngoài ra còn có phiên bản trục cơ sở dài Ghost Extended Series II giá từ 38,9 tỷ đồng, và Black Badge Ghost Series II nâng cấp sức mạnh động cơ giá từ 40,59 tỷ đồng.', '2025-04-21 20:50:59', 'Screenshot 2025-04-22 035040.png', 1, 7, 'Nguyễn Trà My'),
+(15, 'Djokovic chung nhánh Alcaraz, dự báo gặp khó ở Madrid Open 2025', 'Khó khăn thực sự sẽ đến với Djokovic tại tứ kết với những đối thủ rất khó chịu như Matteo Berrettini, Tommy Paul, Karen Khachanov, Tallon Griekspoor, tay vợt gốc Việt Learner Tien hay sao trẻ Joao Fonseca. Đối thủ lớn nhất của tay vợt 37 tuổi ở bán kết Madrid Open năm nay sẽ là Carlos Alcaraz. Ở các giải đấu trong năm nay, Nole rất có duyên chung nhánh đấu với Carlitos, nhưng mới chỉ gặp người đàn em tại tứ kết Australian Open đầu năm nay.\r\nLần tham dự Mutua Madrid Open 2025 đánh dấu màn trở lại của Novak Djokovic tại Caja Magica sau 3 năm. Trong quá khứ, Nole từng 3 lần lên ngôi tại đây - thành tích chỉ kém Rafael Nadal (5 lần) và ngang bằng Roger Federer.\r\n\r\nCác trận đấu thuộc nhánh đấu chính thức nội dung đơn nam Madrid Open năm nay sẽ diễn ra từ ngày mai (23/4) theo giờ Việt Nam.\r\n', '2025-04-22 07:24:55', 'Picture2.png', 2, 8, 'He A'),
+(16, 'HLV Chu Đình Nghiêm hé lộ lý do rất muốn thắng CAHN', 'HLV Chu Đình Nghiêm cho biết CLB Hải Phòng quyết thắng CLB CAHN ở trận Tứ kết Cúp Quốc gia 2024/25.\r\nTheo kế hoạch, trận đấu muộn nhất vòng Tứ kết Cúp Quốc gia 2024/25 giữa CLB Hải Phòng vs CLB Công an Hà Nội (CAHN) sẽ diễn ra vào lúc 19h15 hôm nay (22/4) trên sân Lạch Tray.\r\nTrước đó, Ban tổ chức cũng đã xác định được 3 đội xuất sắc nhất giành vé đi tiếp vào bán kết là: CLB Bình Dương, CLB Sông Lam Nghệ An và CLB Thể Công Viettel.\r\nTrở lại với trận tứ kết muộn giữa CLB Hải Phòng vs CLB CAHN, HLV trưởng CLB Hải Phòng, ông Chu Đình Nghiêm chia sẻ: \"Ngay sau trận đấu với TP.HCM ở vòng 19 V-League vừa qua, chúng tôi đã bước ngay vào chuẩn bị cho trận đấu bù vòng Tứ kết Cúp Quốc gia.\r\nThực tế, trước trận đấu rất khó nói trước điều gì, vì cả hai đội đều rất muốn thắng để tìm cơ hội cho chính mình.\r\nTuy nhiên, chúng tôi càng rất muốn thắng ở trận đấu này, bởi nếu vào bán kết, chúng tôi sẽ tiếp tục được thi đấu trên sân nhà Lạch Tray. Đấy là một lợi thế mà chúng tôi không muốn bỏ lỡ”.\r\nNhận định về đối thủ CAHN, thuyền trưởng CLB Hải Phòng cho biết: \"CAHN là một đội bóng mạnh, lực lượng của họ có nhiều ngôi sao có thể tạo đột biến, nên cuộc đối đầu này chẳng dễ cho CLB Hải Phòng.\r\nTuy nhiên, chúng tôi có lợi thế khi được chơi trên sân nhà, nên sẽ nỗ lực hết mình cho mục tiêu có mặt ở bán kết Cúp Quốc gia. \r\nThực tế, trước trận đấu rất khó nói trước điều gì, vì cả hai đội đều rất muốn thắng để tìm cơ hội cho chính mình.\r\nTuy nhiên, chúng tôi càng rất muốn thắng ở trận đấu này, bởi nếu vào bán kết, chúng tôi sẽ tiếp tục được thi đấu trên sân nhà Lạch Tray. Đấy là một lợi thế mà chúng tôi không muốn bỏ lỡ”.\r\nNhận định về đối thủ CAHN, thuyền trưởng CLB Hải Phòng cho biết: \"CAHN là một đội bóng mạnh, lực lượng của họ có nhiều ngôi sao có thể tạo đột biến, nên cuộc đối đầu này chẳng dễ cho CLB Hải Phòng.\r\nTuy nhiên, chúng tôi có lợi thế khi được chơi trên sân nhà, nên sẽ nỗ lực hết mình cho mục tiêu có mặt ở bán kết Cúp Quốc gia. \r\n', '2025-04-22 07:31:01', 'Screenshot 2025-04-22 121108.png', 0, 8, 'He A'),
+(17, 'Fan MU thốt lên 1 điều khi Antony lập siêu phẩm vô lê', 'Antony của Manchester United tiếp tục ghi dấu ấn trong thời gian thi đấu dưới dạng cho mượn tại Real Betis.\r\nCầu thủ chạy cánh Antony đang cho thấy phong độ ấn tượng trong quãng thời gian được cho mượn tại Real Betis.\r\nGia nhập Manchester United vào năm 2022 với mức phí chuyển nhượng lên tới 86 triệu Bảng từ Ajax, Antony từng được kỳ vọng sẽ trở thành ngôi sao sáng tại Old Trafford. Tuy nhiên, tuyển thủ Brazil đã không đáp ứng được kỳ vọng khi chỉ ghi được 12 bàn thắng và có 5 pha kiến tạo sau 96 lần ra sân.\r\nCầu thủ 25 tuổi dần mất vị trí kể từ khi HLV Ruben Amorim tiếp quản băng ghế chỉ đạo và đã được đem cho Betis mượn trong kỳ chuyển nhượng tháng 1.\r\nThế nhưng, tại Tây Ban Nha, Antony như lột xác. Anh đã có 6 bàn thắng và 4 kiến tạo sau 17 lần ra sân trên mọi đấu trường – một phong độ ấn tượng vượt xa những gì từng thể hiện tại Man Utd.\r\nTrong trận đấu mới nhất gặp Girona tại vòng 32 La Liga, Antony tiếp tục toả sáng khi đóng góp một bàn thắng giúp Real Betis giành chiến thắng 3-1 ngay trên sân khách. Đáng chú ý, pha lập công của anh đến từ một cú vô-lê chân phải (chân không thuận) sau đường tạt bóng tuyệt đẹp của Romain Perraud ở phút 39.\r\nBàn thắng này khiến người hâm mộ Quỷ đỏ không khỏi bất ngờ, nhiều người thậm chí đã kêu gọi đội bóng trao cho Antony thêm một cơ hội ở mùa giải tới.\r\nMột cổ động viên viết trên mạng xã hội: \"Đã đến lúc phải nhìn lại Manchester United và tự hỏi: tại sao chúng ta lại lãng phí quá nhiều tài năng đến vậy?\"\r\n', '2025-04-22 07:31:43', 'Screenshot 2025-04-22 121133.png', 3, 8, 'He A'),
+(18, 'VTV Bình Điền Long An giành quyền vào tứ kết giải châu Á 2025', 'Bóng chuyền VTV Bình Điền Long An vs Saipa Tehran diễn ra lúc mấy giờ?\r\nThời gian: 9h00, hôm nay 22/4\r\nGiải đấu: bảng C giải bóng chuyền vô địch các CLB nữ châu Á 2025\r\nVTV Bình Điền Long An và Saipa Tehran (Iran) đều đã phải nhận thất bại ở trận ra quân giải bóng chuyền vô địch các CLB nữ châu Á (AVC Women\'s Champions League) 2025 trước đại diện Trung Quốc - Bắc Kinh (Beijing BAIC Motor). Chiến thắng là điều bắt buộc với cả hai nếu muốn giành quyền vào tứ kết giải đấu.\r\n\r\nNhìn vào màn thể hiện của hai đội ở trận ra quân, VTV Bình Điền Long An vẫn là đội đánh giá cao hơn. Trần Thị Thanh Thúy và các đồng đội đã chơi xuất sắc và dẫn trước Bắc Kinh 2-0 trước khi thua ngược đáng tiếc 2-3, trong khi Saipa Tehran hoàn toàn bất lực trước sức mạnh của Jin Ye và các đồng đội và chấp nhận thất bại 0-3. \r\n\r\nDanh sách cầu thủ VTV Bình Điền Long An AVC Women\'s Champions League 2025\r\n', '2025-04-22 07:31:43', '491684159_1135356218606931_8987587461539943544_n-6806e04343fab.jpg', 1, 8, 'He A'),
+(19, 'Nadal: \'Tôi không nhớ tennis chút nào\'', 'Rafael Nadal mới đây đã có những chia sẻ ở lễ trao giải Laureus World Sports Awards 2025 diễn ra tại Madrid, Tây Ban Nha ngày hôm qua 21/4.\r\n\"Ông vua sân đất nện\" Rafael Nadal đã chính thức khép lại sự nghiệp thi đấu đỉnh cao sau trận đấu cuối cùng của anh tại Davis Cup Finals ở Malaga vào tháng 11 năm ngoái. Ở tuổi 38, Nadal rời sân đấu với bảng thành tích đồ sộ gồm 22 danh hiệu Grand Slam, trong đó có 14 lần đăng quang tại giải Grand Slam thứ 2 trong năm - Roland Garros.\r\nSau khi giải nghệ, Nadal gần như không tham dự nhiều hoạt động quần vợt, tập trung vào các sở thích khác của bản thân như bóng đá, golf hay chơi padel - môn thể thao kết hợp giữa tennis và squash.\r\nPhát biểu trước báo giới vào ngày hôm qua 21/4, Rafa chia sẻ một cách thẳng thắn về lí do anh đang tỏ ra xa cách bộ môn làm nên tên tuổi của mình.\r\n\"Sự thật là tôi không nhớ quần vợt. Không. Tôi không nhớ chút nào.\", Nadal bộc bạch ở lễ trao giải Laureus World Sport Awards tại Madrid. \"Không phải vì tôi chán quần vợt. Tôi đã kết thúc sự nghiệp của mình một cách vui vẻ. Nếu có thể, tôi vẫn muốn tiếp tục, vì tôi yêu những gì mình đang làm. Đó là đam mê của tôi, và đó cũng là điều đã diễn ra suốt cuộc đời tôi. Nhưng khi bạn nhận ra rằng, về mặt thể chất, bạn không thể tiếp tục... bạn phải học cách khép lại chương đó. Và tôi đã khép lại nó\".\r\n\r\nTrong suốt sự nghiệp kéo dài hơn hai thập kỉ, Nadal đã không ít lần đối mặt với những chấn thương nghiêm trọng. Tuy vậy, anh vẫn kiên định không tuyên bố giải nghệ cho đến khi thật sự chắc chắn về quyết định của mình.\r\n\"Tôi đã trì hoãn việc đưa ra quyết định cuối cùng vì tôi cần thời gian để chắc chắn rằng đó là quyết định đúng đắn. Điều khó khăn nhất là ngồi trên ghế sofa và tự hỏi liệu mình có nên tiếp tục cố gắng hay không. Khi tôi thấy cơ thể mình không thể phục hồi tốt để tiếp tục tận hưởng trên sân đấu, tôi đã quyết định dừng lại\".\r\nTại Roland Garros sắp tới, Rafael Nadal sẽ có mặt tại sân chính Philippe Chatrier để tham dự buổi lễ tri ân long trọng do Ban tổ chức giải Grand Slam này tổ chức. Cùng dự lễ tri ân với Rafa còn có Richard Gasquet - tay vợt có cú trái một tay lịch lãm bậc nhất sẽ giải nghệ sau khi Roland Garros năm nay khép lại.\r\n', '2025-04-22 07:31:43', 'Picture3.png', 1, 8, 'He A'),
+(22, '\'Địa đạo\' vượt 150 tỷ đồng', 'Sự xuất hiện của \"Tìm xác: Ma không đầu\" thay đổi cục diện phòng vé tuần qua, khiến \"Địa đạo: Mặt trời trong bóng tối\" bị mất ngôi đầu bảng. Song, phim có Tiến Luật và Ngô Kiến Huy chưa tạo được hiệu ứng truyền thông nổi bật.\r\nSau hai tuần liên tiếp giữ vững ngôi vương phòng vé, Địa đạo: Mặt trời trong bóng tối chính thức bị phim Việt Tìm xác: Ma không đầu hạ gục.\r\n\r\nPhim hài – kinh dị có Ngô Kiến Huy và Tiến Luật vươn lên dẫn đầu bảng xếp hạng của Box Office Vietnam (đơn vị quan sát phòng vé độc lập). Song, phim chưa tạo hiệu ứng truyền thông quá ấn tượng.\r\nĐịa đạo bị lật đổ\r\nTrong ba ngày cuối tuần, Tìm xác: Ma không đầu thu hơn 21 tỷ đồng với khoảng trên 251.958 vé bán ra trong hơn 7.777 suất chiếu. Con số này tụt 24% so với Địa đạo tuần trước (27,5 tỷ đồng), cũng không phải là thành tích mở màn quá ấn tượng của phim Việt.\r\n\r\nDự án thuộc thể loại hài - kinh dị, Bùi Văn Hải đạo diễn, quy tụ dàn diễn viên nổi tiếng gồm Tiến Luật, Ngô Kiến Huy, NSND Hồng Vân… Kịch bản tiếp tục khai thác nghề hốt xác và lái xe cứu thương nhưng với góc nhìn hài hước, mang đến những tràng cười sảng khoái cho người xem sau loạt phim kinh dị rùng rợn, nặng đô trước đó.\r\n\r\nĐáng tiếc, phim của Ngô Kiến Huy và Tiến Luật chưa tạo được hiệu ứng quá tốt. Phim cũng không được đánh giá quá cao về nội dung, cách dẫn dắt câu chuyện. Sự góp mặt của dàn diễn viên tên tuổi là yếu tố hút khách duy nhất, nhưng không đủ để cứu vớt chất lượng.\r\n\r\nĐứng ở vị trí thứ hai, Địa đạo: Mặt trời trong bóng tối đạt doanh thu cuối tuần không ấn tượng, chỉ hơn 11,4 tỷ đồng.\r\n\r\nDự án do Bùi Thạc Chuyên đạo diễn, Thái Hòa đóng chính, hướng tới kỷ niệm 50 năm thống nhất đất nước, kể về các du kích tại căn cứ Bình An Đông (Củ Chi).\r\n\r\nHiện phim đã thu về hơn 150 tỷ đồng, lập kỷ lục là phim chiến tranh Việt Nam có doanh thu cao nhất lịch sử điện ảnh nước nhà. Đây cũng là thành tích ấn tượng đối với một bộ phim không sử dụng ngân sách nhà nước, lại chọn đề tài lịch sử khá kén khán giả.\r\n\r\nVới tốc độ hiện tại, nhiều khả năng Địa \r\nđạo sẽ rời rạp với doanh thu khoảng 160-170 tỷ đồng, cơ hội chạm đến con số 200 tỷ đồng là không cao.\r\nĐứng ở vị trí thứ ba là phim hài – kinh dị Thái Lan Cưới ma giải hạn. Đây là bản remake của phim Đài Loan Chuyện tôi và ma quỷ thành người một nhà có Hứa Quang Hán đóng chính, từng gây sốt phòng vé Việt năm 2023.\r\n\r\nCầm trịch dự án là đạo diễn Chayanop Boonprakob – đứng sau nhiều tác phẩm đình đám như SuckSeed hay Friend Zone. Bản Thái giữ nguyên tinh thần nguyên tác nhưng cũng thêm thắt nhiều nét văn hóa bản địa nhằm tạo sức hút riêng.\r\n\r\nRa mắt rạp Việt, dự án nhanh chóng được khán giả đón nhận dù khâu quảng bá không rầm rộ. Phim chưa tạo hiệu ứng quá mạnh nhưng cũng làm giảm tốc độ của các đối thủ khác.\r\n\r\nRạp chiếu ảm đạm\r\nHai vị trí cuối cùng trong top 5 của Box Office Vietnam là A Minecraft Movie (2,1 tỷ) và phim Hàn Đầu xuôi đuôi đút lót (460 triệu đồng).\r\n\r\nBom tấn A Minecraft Movie tiếp tục rớt xuống vị trí thứ tư, nâng tổng doanh thu tại rạp Việt lên mức trên 21 tỷ đồng. Tác phẩm chuyển thể từ tựa game cùng tên, nằm trong top bán chạy nhất mọi thời với hơn 300 triệu bản bán ra.\r\n\r\nDự án được đầu tư kinh phí cao (hơn 300 triệu USD), quy tụ dàn sao gồm Jack Black, Jason Momoa, Emma Myers… hứa hẹn tạo nên một cú nổ lớn tại phòng vé. Song, phản ứng ban đầu từ giới phê bình chưa tốt, khiến kỳ vọng phần nào bị giảm sút.\r\nĐầu xuôi đuôi đút lót thuộc thể loại hài hước, có tài tử Ha Jung Woo đóng chính. Phim kể về CEO một công ty công nghệ bị bạn cũ phản bội nên tìm mọi chiêu trò để cứu công ty. Song, dự án chưa được chú ý vì đụng độ nhiều phim Việt khi ra rạp, nhà phát hành cũng không đẩy mạnh quảng bá.\r\n\r\nCác dự án ngoài top 5 đều có doanh thu thấp, không quá 500 triệu đồng, cho thấy rạp chiếu tiếp tục rơi vào tình trạng ảm đạm. Nhiều phim ngoại mới ra mắt cũng ế ẩm. Các phim hành động Tay nghiệp dư, Mật vụ phụ hồ hay phim kinh dị Mẹ quỷ con ma… đều không được chú ý tại rạp Việt.\r\n\r\nTuần này, hai “ông lớn” khác của điện ảnh Việt là Lý Hải và Victor Vũ sẽ có phim ra rạp, khởi động cuộc chiến gay cấn ngoài rạp dịp lễ 30/4.\r\n\r\nLý Hải nối dài thương hiệu Lật mặt với phần thứ tám mang tên Vòng tay nắng. Phim được kỳ vọng phát huy phong cách gần gũi, dễ xem, đồng thời chạm đến cảm xúc của khán giả đại chúng – đặc trưng làm nên thành công của cả series.\r\n\r\nTrong khi đó, Victor Vũ tiếp tục thử sức với Thám tử Kiên: Kỳ án không đầu - tiền truyện của Người vợ cuối cùng (2023). Nội dung phim tập trung khai thác câu chuyện riêng về nhân vật thám tử Kiên – một người thông minh, quyết đoán với tài phá án xuất sắc.\r\n\r\nCả hai đều áp dụng chiến lược chiếu sớm để thu hút khán giả, hứa hẹn giúp phòng vé sôi động trở lại. Hiện vẫn chưa biết phim nào sẽ chiến thắng. Nhưng nhiều khả năng phim có Tiến Luật – Ngô Kiến Huy sẽ bị lép vế trước hai đối thủ quá mạnh.\r\n', '2025-04-22 07:31:43', 'gt1.png', 1, 6, 'He A');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `role` enum('admin','user') COLLATE utf8_unicode_ci DEFAULT 'user'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`) VALUES
+(1, 'admin', '0192023a7bbd73250516f069df18b500', 'admin@example.com', 'admin'),
+(2, 'hea', 'e10adc3949ba59abbe56e057f20f883e', 'heaksor12003@gmail.com', 'admin'),
+(3, 'abc', 'e10adc3949ba59abbe56e057f20f883e', 'heaksor12003@gmail.com', 'user'),
+(4, 'truc', 'e10adc3949ba59abbe56e057f20f883e', 'trucvu0222@gmail.com', 'admin'),
+(5, 'linh', 'e10adc3949ba59abbe56e057f20f883e', 'trankhanhlinh557@gmail.com', 'admin'),
+(6, 'diep', 'e10adc3949ba59abbe56e057f20f883e', 'ngocdiep24kt@gmail.com', 'admin'),
+(7, 'chau', 'e10adc3949ba59abbe56e057f20f883e', 'minhchau1942004@gmail.com', 'admin');
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `chuyenmuc`
+--
+ALTER TABLE `chuyenmuc`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `news_id` (`news_id`);
+
+--
+-- Chỉ mục cho bảng `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_chuyenmuc` (`chuyenmuc_id`);
+
+--
+-- Chỉ mục cho bảng `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `chuyenmuc`
+--
+ALTER TABLE `chuyenmuc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT cho bảng `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT cho bảng `news`
+--
+ALTER TABLE `news`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT cho bảng `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`);
+
+--
+-- Các ràng buộc cho bảng `news`
+--
+ALTER TABLE `news`
+  ADD CONSTRAINT `fk_chuyenmuc` FOREIGN KEY (`chuyenmuc_id`) REFERENCES `chuyenmuc` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
