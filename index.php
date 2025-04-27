@@ -10,7 +10,7 @@ $chuyenmuc_result = mysqli_query($conn, "SELECT * FROM chuyenmuc");
 
 // Lấy số trang từ GET (nếu có), nếu không thì mặc định là trang 1
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 5;  // Số lượng bài viết mỗi trang
+$limit = 10;  // Số lượng bài viết mỗi trang
 $offset = ($page - 1) * $limit;  // Xác định offset bắt đầu lấy bài viết
 
 // Lấy danh sách bài viết với phân trang
@@ -46,6 +46,30 @@ if (isset($_GET['delete_id']) && $is_admin) {
 <body>
     <?php include('modun/header.php'); ?>
     <?php include('modun/menu.php'); ?>
+    <style>
+    input[name="keyword"]:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+
+    button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    </style>
+    <!-- Form tìm kiếm -->
+    <form method="GET" action="timkiem.php" style="text-align: center; margin: 30px 0;">
+        <input 
+            type="text" 
+            name="keyword" 
+            placeholder="Nhập từ khóa..." 
+            required
+            style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; outline: none; transition: 0.3s;">
+        <button 
+            type="submit" 
+            style="padding: 10px 20px; margin-left: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 20px; font-size: 16px; cursor: pointer; transition: 0.3s;">
+            Tìm kiếm
+        </button>
+    </form>
 
     <!-- Hiển thị các chuyên mục -->
     <div class="chuyenmuc">

@@ -1,7 +1,9 @@
 <?php
 session_start();
 include('connect.php');
-$chuyenmuc_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Lấy ID chuyên mục từ GET
+$chuyenmuc_id = isset($_GET['chuyenmuc_id']) ? $_GET['chuyenmuc_id'] : 'all'; // mặc định là 'all'
 
 // Kiểm tra quyền admin
 $is_admin = isset($_SESSION['role']) && $_SESSION['role'] == 'admin';
@@ -19,22 +21,24 @@ $default_categories = [
 // Lấy danh sách chuyên mục từ cơ sở dữ liệu (trừ các chuyên mục mặc định)
 $additional_categories_result = mysqli_query($conn, "SELECT * FROM chuyenmuc WHERE ten NOT IN ('Thời sự', 'Chính trị', 'Y tế', 'Giáo dục', 'Khoa học', 'Giải trí')");
 
-// Lấy bài viết của chuyên mục nếu có
-$sql = "SELECT * FROM news ORDER BY id DESC LIMIT 5";
-if (isset($_GET['chuyenmuc_id'])) {
-    $chuyenmuc_id = $_GET['chuyenmuc_id'];
+// Phân trang: lấy số trang từ GET, mặc định là trang 1
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit = 10; // Số lượng bài viết mỗi trang
+$offset = ($page - 1) * $limit; // Xác định offset bắt đầu lấy bài viết
 
-    // Kiểm tra nếu 'chuyenmuc_id' là một trong các chuyên mục mặc định
+// Lấy bài viết của chuyên mục nếu có
+$sql = "SELECT * FROM news ORDER BY id DESC LIMIT $limit OFFSET $offset"; // Lấy tất cả bài viết
+
+if ($chuyenmuc_id != 'all') {
+    // Nếu chọn chuyên mục cụ thể
     if (in_array($chuyenmuc_id, $default_categories)) {
-        $sql = "SELECT * FROM news WHERE chuyenmuc_id = (SELECT id FROM chuyenmuc WHERE ten = '$chuyenmuc_id') ORDER BY id DESC LIMIT 5";
-    } elseif ($chuyenmuc_id == 'all') {
-        // Nếu chọn "Xem tất cả", hiển thị bài viết của tất cả các chuyên mục
-        $sql = "SELECT * FROM news ORDER BY id DESC LIMIT 5";
+        $sql = "SELECT * FROM news WHERE chuyenmuc_id = (SELECT id FROM chuyenmuc WHERE ten = '$chuyenmuc_id') ORDER BY id DESC LIMIT $limit OFFSET $offset";
     } else {
         // Lấy bài viết theo chuyên mục ID từ cơ sở dữ liệu
-        $sql = "SELECT * FROM news WHERE chuyenmuc_id = '$chuyenmuc_id' ORDER BY id DESC LIMIT 5";
+        $sql = "SELECT * FROM news WHERE chuyenmuc_id = '$chuyenmuc_id' ORDER BY id DESC LIMIT $limit OFFSET $offset";
     }
 }
+
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -87,7 +91,7 @@ $result = mysqli_query($conn, $sql);
         <!-- Phân trang -->
         <?php
         // Nếu có 'chuyenmuc_id', lấy tổng số bài viết trong chuyên mục đó
-        if (isset($chuyenmuc_id) && $chuyenmuc_id != 'all') {
+        if ($chuyenmuc_id != 'all') {
             $total_result = mysqli_query($conn, "SELECT COUNT(*) AS total FROM news WHERE chuyenmuc_id = '$chuyenmuc_id'");
         } else {
             // Nếu chọn "Xem tất cả", lấy tổng số bài viết
@@ -95,9 +99,11 @@ $result = mysqli_query($conn, $sql);
         }
         
         $total_row = mysqli_fetch_assoc($total_result);
-        $total_pages = ceil($total_row['total'] / 5);
+        $total_pages = ceil($total_row['total'] / $limit);
+
         for ($i = 1; $i <= $total_pages; $i++) {
-            echo "<a href='?chuyenmuc_id=$chuyenmuc_id&page=$i' style='margin:0 5px;'>$i</a>";
+            $chuyenmuc_link = isset($_GET['chuyenmuc_id']) ? "chuyenmuc_id=" . $_GET['chuyenmuc_id'] . "&" : "";
+            echo "<a href='?{$chuyenmuc_link}page=$i' style='margin:0 5px;'>$i</a>";
         }
         ?>
     </div>
